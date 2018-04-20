@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>Trading</Name>
+    <Name>Trading_Database</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{cba2da71-8f32-4e92-80a8-25a5df21c63a}</ProjectGuid>
@@ -14,7 +14,7 @@
     </RootPath>
     <RootNamespace>Trading</RootNamespace>
     <AssemblyName>Trading</AssemblyName>
-    <ModelCollation>1033, CI</ModelCollation>
+    <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -23,6 +23,8 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>Latin1_General_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -57,5 +59,32 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Lookup\" />
+    <Folder Include="Lookup\Tables\" />
+    <Folder Include="Stock\" />
+    <Folder Include="Stock\Tables\" />
+    <Folder Include="Config\" />
+    <Folder Include="Config\Tables\" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="Config\Stored Procedures\" />
+    <Folder Include="Security\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Lookup\Tables\Stock.sql" />
+    <Build Include="Stock\Tables\PriceByDay.sql" />
+    <Build Include="Stock\Tables\PriceByHour.sql" />
+    <Build Include="Stock\Tables\PriceByMinute.sql" />
+    <Build Include="Config\Tables\API.sql" />
+    <Build Include="Lookup\Tables\Exchange.sql" />
+    <Build Include="Config\Tables\Parameter.sql" />
+    <Build Include="Lookup\Tables\ExchangeStockXref.sql" />
+    <Build Include="dbo\Functions\fn_ConvertTimestampToDateTime.sql" />
+    <Build Include="Config\Stored Procedures\GetApiUrlByMethod.sql" />
+    <Build Include="Security\Audit.sql" />
+    <Build Include="Security\Config.sql" />
+    <Build Include="Security\Log.sql" />
+    <Build Include="Security\Lookup.sql" />
+    <Build Include="Security\Stock.sql" />
   </ItemGroup>
 </Project>

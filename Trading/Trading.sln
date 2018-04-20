@@ -3,20 +3,32 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Trading", "Trading.sqlproj", "{CBA2DA71-8F32-4E92-80A8-25A5DF21C63A}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Trading_Database", "Trading_Database.sqlproj", "{CBA2DA71-8F32-4E92-80A8-25A5DF21C63A}"
+EndProject
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "Trading_SSIS", "..\Trading_SSIS\Trading_SSIS.dtproj", "{B7D1261C-F862-4B50-93F1-16364DA7CD9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Development|Any CPU = Development|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{CBA2DA71-8F32-4E92-80A8-25A5DF21C63A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CBA2DA71-8F32-4E92-80A8-25A5DF21C63A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBA2DA71-8F32-4E92-80A8-25A5DF21C63A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{CBA2DA71-8F32-4E92-80A8-25A5DF21C63A}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBA2DA71-8F32-4E92-80A8-25A5DF21C63A}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{CBA2DA71-8F32-4E92-80A8-25A5DF21C63A}.Development|Any CPU.Deploy.0 = Debug|Any CPU
 		{CBA2DA71-8F32-4E92-80A8-25A5DF21C63A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBA2DA71-8F32-4E92-80A8-25A5DF21C63A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CBA2DA71-8F32-4E92-80A8-25A5DF21C63A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B7D1261C-F862-4B50-93F1-16364DA7CD9E}.Debug|Any CPU.ActiveCfg = Development
+		{B7D1261C-F862-4B50-93F1-16364DA7CD9E}.Debug|Any CPU.Build.0 = Development
+		{B7D1261C-F862-4B50-93F1-16364DA7CD9E}.Development|Any CPU.ActiveCfg = Development
+		{B7D1261C-F862-4B50-93F1-16364DA7CD9E}.Development|Any CPU.Build.0 = Development
+		{B7D1261C-F862-4B50-93F1-16364DA7CD9E}.Release|Any CPU.ActiveCfg = Development
+		{B7D1261C-F862-4B50-93F1-16364DA7CD9E}.Release|Any CPU.Build.0 = Development
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
