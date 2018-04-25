@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0"?>
 <DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
-  DTS:ObjectName="localhost.Trading"
+  DTS:ObjectName="Trading"
   DTS:DTSID="{42F6D32A-F7BB-471D-AD95-CFAF6D29C0BE}"
   DTS:CreationName="OLEDB">
   <DTS:ObjectData>

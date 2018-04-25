@@ -5,42 +5,20 @@
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="MAC"
   DTS:CreatorName="MAC\rtroncoso"
-  DTS:DTSID="{B8385936-FB29-4F9A-839C-280CB8C32FC1}"
+  DTS:DTSID="{D7BBF0F9-C808-4187-A181-0B6429643792}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="14.0.3002.92"
   DTS:LocaleID="2057"
-  DTS:ObjectName="ImportTradingData"
+  DTS:ObjectName="ImportHistoryByHour"
   DTS:PackageType="5"
-  DTS:VersionBuild="66"
-  DTS:VersionGUID="{8F332FDF-9FAD-4AAE-AF39-376727F675B7}">
+  DTS:VersionBuild="68"
+  DTS:VersionGUID="{D1831455-BDCE-4B22-90D0-E89DD34B4971}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
-  <DTS:PackageParameters>
-    <DTS:PackageParameter
-      DTS:CreationName=""
-      DTS:DataType="8"
-      DTS:DTSID="{5EEEF96D-0CB5-446D-972A-FB3928A01E21}"
-      DTS:ObjectName="CryptoId"
-      DTS:Required="True">
-      <DTS:Property
-        DTS:DataType="8"
-        DTS:Name="ParameterValue">XRP</DTS:Property>
-    </DTS:PackageParameter>
-    <DTS:PackageParameter
-      DTS:CreationName=""
-      DTS:DataType="8"
-      DTS:DTSID="{C2F855D6-2922-4E17-86C8-1B2798566561}"
-      DTS:ObjectName="Url"
-      DTS:Required="True">
-      <DTS:Property
-        DTS:DataType="8"
-        DTS:Name="ParameterValue">https://min-api.cryptocompare.com/data/histohour?fsym=XRP&amp;tsym=USD&amp;limit=2000&amp;aggregate=1&amp;e=kraken&amp;toTs=1518826512</DTS:Property>
-    </DTS:PackageParameter>
-  </DTS:PackageParameters>
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{BFBED400-1190-42C8-BB97-D2E4D9228D8A}"
+      DTS:DTSID="{B95921A2-6D9D-4318-99F0-E2A3F219305A}"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="CurrentStockId">
@@ -50,7 +28,7 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{9400A5D7-F09C-49A9-AD44-B66DCFE16A36}"
+      DTS:DTSID="{D4B8FE2B-CCEC-4E43-BEAE-9A83F723E31B}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
       DTS:ObjectName="RecordCount">
@@ -59,7 +37,7 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{1A0B484D-D954-46F9-B8A8-1CD81283C318}"
+      DTS:DTSID="{67D0AAD6-8639-42C8-B492-FE839B465B0E}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
       DTS:ObjectName="Stocks">
@@ -466,13 +444,13 @@
       DTS:refId="Package\Foreach Loop Container"
       DTS:CreationName="STOCK:FOREACHLOOP"
       DTS:Description="Foreach Loop Container"
-      DTS:DTSID="{b56b3a40-0adc-44c0-b4bd-61069a47be55}"
+      DTS:DTSID="{3152522f-ce55-4370-9321-475428b87a3a}"
       DTS:ExecutableType="STOCK:FOREACHLOOP"
       DTS:LocaleID="-1"
       DTS:ObjectName="Foreach Loop Container">
       <DTS:ForEachEnumerator
         DTS:CreationName="Microsoft.ForEachADOEnumerator"
-        DTS:DTSID="{ef35d7db-2ffe-4284-b322-2282d7819bae}"
+        DTS:DTSID="{f09e4944-4402-4b12-9bea-f98e26b58a16}"
         DTS:ObjectName="{EBA28850-FB50-4950-B836-8BFB80BB0550}">
         <DTS:ObjectData>
           <FEEADO
@@ -485,7 +463,7 @@
       <DTS:ForEachVariableMappings>
         <DTS:ForEachVariableMapping
           DTS:CreationName=""
-          DTS:DTSID="{12865a49-4be7-4636-a7c9-8f0a5aa8b421}"
+          DTS:DTSID="{7d3bbd36-6917-4c56-89cb-295d3abe7ee0}"
           DTS:ObjectName="{A430A6F4-D3F8-44D5-9ABD-DDB322925D41}"
           DTS:ValueIndex="0"
           DTS:VariableName="User::CurrentCryptoId" />
@@ -495,7 +473,7 @@
       DTS:refId="Package\Get Cryptos"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{a6b4a4d5-ec27-4aa3-8dd0-10ea2b66dbec}"
+      DTS:DTSID="{04dd459c-3345-42db-ab89-1162d954e61e}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Get Cryptos"
@@ -517,7 +495,7 @@
       DTS:refId="Package\Import Crypto Data"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
-      DTS:DTSID="{9FBA0D75-AF9B-42B6-9165-880A7B03DE1E}"
+      DTS:DTSID="{76CE704A-E9D4-4AC6-98CC-2BA279FB8571}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
       DTS:ObjectName="Import Crypto Data"
@@ -2906,7 +2884,7 @@ ORDER BY CryptoId, [Timestamp]</property>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{772804c3-6e1b-4d13-a6e5-dde47fa748d8}"
+      DTS:DTSID="{2cb5740b-c52e-442c-a50c-395692628e06}"
       DTS:From="Package\Get Cryptos"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
@@ -3016,7 +2994,9 @@ ORDER BY CryptoId, [Timestamp]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -3062,7 +3042,9 @@ ORDER BY CryptoId, [Timestamp]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -3084,7 +3066,9 @@ ORDER BY CryptoId, [Timestamp]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -3106,7 +3090,9 @@ ORDER BY CryptoId, [Timestamp]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -3128,7 +3114,9 @@ ORDER BY CryptoId, [Timestamp]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

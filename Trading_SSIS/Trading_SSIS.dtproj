@@ -26,20 +26,22 @@
           <SSIS:Property SSIS:Name="CreatorComputerName">MAC</SSIS:Property>
           <SSIS:Property SSIS:Name="Description">
           </SSIS:Property>
-          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAMD0EEzMbcE2gl4kKM9KHCwAAAAACAAAAAAAQZgAAAAEAACAAAABbRd33i7Eoeqjl8M/Z/cMb7A0PNxAl9qRMChLV4c9RuQAAAAAOgAAAAAIAACAAAAA/EfKg+ouPiVREkT9kulqG/1p1whI6dJiuEJ+jvSrCE5AAAAC8Ygy6F3jcCpHlmvAyCpJNzZsHHlUVr+R+ZSLJm0XT7RViZ9mpVInZESWpw71LGsOLj/mRN+sNXx6eAuKXGNQhpA3JUP7O9Wr30lhdNqw+UrOU3+wx4u8Z2TEpV+efAhAqMnQYbQHbiZOY+W/5FK4Bu27rrvQKhdPhYciCMbeFmhRwKwddNZv0REBWpEt5NINAAAAAmYRJESbtQf7DlqXPpzTjWGzlhsHYBis/Fwt6ote1cJCoEZqtVXrYaEY33JLG1q7CLKEZmp65StuDb3wpZtNgMg==</SSIS:Property>
+          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAMD0EEzMbcE2gl4kKM9KHCwAAAAACAAAAAAAQZgAAAAEAACAAAACboLIMENpgOQ95Rk8FAInu/LGfOSip42cuoCoxqwFicgAAAAAOgAAAAAIAACAAAADXmSMV0n0COSGSyjp4XQBp302HYEfGLw/cyCd89EcJMpAAAAB2b1tGEeAH4UKrEAwVfbFhOZjdITNdW7MlWGb/4YghcthSY0jIsM1zThc+8waSsFruvIKsnbQfWaHkyOc6oalNzXk9W6aKmltzO/CxDOHIx8XvdmXsbKtTp4MWhL+Gxf/2v5j4OO5WURgqRAZDUxzDhey7pwvQWBjHL+WKq324DL3iL7HpQLpcgl7ZejKbIJVAAAAAtUI1wf0gCqq3ZLv2BT0Py+qNEmF5Hb3oZsF7ey7UOvowKdbUIp5Ley5u4o/jpj5Lf9SMFUxrlBAW86V/ENYtkw==</SSIS:Property>
           <SSIS:Property SSIS:Name="FormatVersion">1</SSIS:Property>
         </SSIS:Properties>
         <SSIS:Packages>
-          <SSIS:Package SSIS:Name="Package.dtsx" SSIS:EntryPoint="1" />
           <SSIS:Package SSIS:Name="ImportTradingData.dtsx" SSIS:EntryPoint="1" />
           <SSIS:Package SSIS:Name="Master.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="ImportHistoryByHour.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="ImportHistoryByMinute.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="ImportHistoryByDay.dtsx" SSIS:EntryPoint="1" />
         </SSIS:Packages>
         <SSIS:ConnectionManagers>
-          <SSIS:ConnectionManager SSIS:Name="localhost.Trading.conmgr" />
+          <SSIS:ConnectionManager SSIS:Name="Trading.conmgr" />
         </SSIS:ConnectionManagers>
         <SSIS:DeploymentInfo>
           <SSIS:ProjectConnectionParameters>
-            <SSIS:Parameter SSIS:Name="CM.localhost.Trading.ConnectionString">
+            <SSIS:Parameter SSIS:Name="CM.Trading.ConnectionString">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">
                 </SSIS:Property>
@@ -54,7 +56,7 @@
                 <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
               </SSIS:Properties>
             </SSIS:Parameter>
-            <SSIS:Parameter SSIS:Name="CM.localhost.Trading.InitialCatalog">
+            <SSIS:Parameter SSIS:Name="CM.Trading.InitialCatalog">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">
                 </SSIS:Property>
@@ -69,7 +71,7 @@
                 <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
               </SSIS:Properties>
             </SSIS:Parameter>
-            <SSIS:Parameter SSIS:Name="CM.localhost.Trading.Password">
+            <SSIS:Parameter SSIS:Name="CM.Trading.Password">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">
                 </SSIS:Property>
@@ -83,7 +85,7 @@
                 <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
               </SSIS:Properties>
             </SSIS:Parameter>
-            <SSIS:Parameter SSIS:Name="CM.localhost.Trading.RetainSameConnection">
+            <SSIS:Parameter SSIS:Name="CM.Trading.RetainSameConnection">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">
                 </SSIS:Property>
@@ -98,7 +100,7 @@
                 <SSIS:Property SSIS:Name="DataType">3</SSIS:Property>
               </SSIS:Properties>
             </SSIS:Parameter>
-            <SSIS:Parameter SSIS:Name="CM.localhost.Trading.ServerName">
+            <SSIS:Parameter SSIS:Name="CM.Trading.ServerName">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">
                 </SSIS:Property>
@@ -113,7 +115,7 @@
                 <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
               </SSIS:Properties>
             </SSIS:Parameter>
-            <SSIS:Parameter SSIS:Name="CM.localhost.Trading.UserName">
+            <SSIS:Parameter SSIS:Name="CM.Trading.UserName">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">
                 </SSIS:Property>
@@ -129,33 +131,16 @@
             </SSIS:Parameter>
           </SSIS:ProjectConnectionParameters>
           <SSIS:PackageInfo>
-            <SSIS:PackageMetaData SSIS:Name="Package.dtsx">
-              <SSIS:Properties>
-                <SSIS:Property SSIS:Name="ID">{32E07E2E-7C8F-4967-ABE0-CE34E9826C20}</SSIS:Property>
-                <SSIS:Property SSIS:Name="Name">Package</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionComments">
-                </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{3E6FFB16-53E4-43D5-BDDF-16B2FBE00BB1}</SSIS:Property>
-                <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
-                <SSIS:Property SSIS:Name="Description">
-                </SSIS:Property>
-                <SSIS:Property SSIS:Name="ProtectionLevel">1</SSIS:Property>
-              </SSIS:Properties>
-              <SSIS:Parameters />
-            </SSIS:PackageMetaData>
             <SSIS:PackageMetaData SSIS:Name="ImportTradingData.dtsx">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">{B8385936-FB29-4F9A-839C-280CB8C32FC1}</SSIS:Property>
                 <SSIS:Property SSIS:Name="Name">ImportTradingData</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">63</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">66</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{BAB833AC-7516-4E45-AB1E-308BCF497D9A}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{8F332FDF-9FAD-4AAE-AF39-376727F675B7}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -198,10 +183,61 @@
                 <SSIS:Property SSIS:Name="Name">Master</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">6</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">17</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{384C0516-6B8F-4E98-B59D-F5F14507839A}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{35FE6113-E59F-47AF-9C08-919D80C9A788}</SSIS:Property>
+                <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
+                <SSIS:Property SSIS:Name="Description">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="ProtectionLevel">1</SSIS:Property>
+              </SSIS:Properties>
+              <SSIS:Parameters />
+            </SSIS:PackageMetaData>
+            <SSIS:PackageMetaData SSIS:Name="ImportHistoryByHour.dtsx">
+              <SSIS:Properties>
+                <SSIS:Property SSIS:Name="ID">{D7BBF0F9-C808-4187-A181-0B6429643792}</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">ImportHistoryByHour</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">68</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionComments">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{D1831455-BDCE-4B22-90D0-E89DD34B4971}</SSIS:Property>
+                <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
+                <SSIS:Property SSIS:Name="Description">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="ProtectionLevel">1</SSIS:Property>
+              </SSIS:Properties>
+              <SSIS:Parameters />
+            </SSIS:PackageMetaData>
+            <SSIS:PackageMetaData SSIS:Name="ImportHistoryByMinute.dtsx">
+              <SSIS:Properties>
+                <SSIS:Property SSIS:Name="ID">{19BBAC0A-BA23-4171-BAD4-EDF69EAD57F4}</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">ImportHistoryByMinute</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">67</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionComments">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{B68E1815-42EC-4D6C-93D1-B9AEE2A60F83}</SSIS:Property>
+                <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
+                <SSIS:Property SSIS:Name="Description">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="ProtectionLevel">1</SSIS:Property>
+              </SSIS:Properties>
+              <SSIS:Parameters />
+            </SSIS:PackageMetaData>
+            <SSIS:PackageMetaData SSIS:Name="ImportHistoryByDay.dtsx">
+              <SSIS:Properties>
+                <SSIS:Property SSIS:Name="ID">{F0BDC370-4BEE-4343-8F19-048BF916FF0B}</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">ImportHistoryByDay</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">68</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionComments">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{0E54D367-CA00-4EFF-9267-7A0E31FDE56B}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -226,7 +262,13 @@
         <ConnectionSecurityMappings />
         <DatabaseStorageLocations />
         <TargetServerVersion>SQLServer2017</TargetServerVersion>
-        <ParameterConfigurationValues />
+        <ParameterConfigurationValues>
+          <ConfigurationSetting>
+            <Id>LastModifiedTime</Id>
+            <Name>LastModifiedTime</Name>
+            <Value xsi:type="xsd:dateTime">2018-04-24T17:43:04.7516205Z</Value>
+          </ConfigurationSetting>
+        </ParameterConfigurationValues>
       </Options>
     </Configuration>
   </Configurations>
