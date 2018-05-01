@@ -11,11 +11,31 @@
   DTS:LocaleID="2057"
   DTS:ObjectName="ImportHistoryByMinute"
   DTS:PackageType="5"
-  DTS:VersionBuild="67"
-  DTS:VersionGUID="{B68E1815-42EC-4D6C-93D1-B9AEE2A60F83}">
+  DTS:VersionBuild="87"
+  DTS:VersionGUID="{39BA032F-50A9-47B2-813E-D8CBEDE1C2E9}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{ED4BD8B8-5554-405E-84AB-BED7A0CD1570}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="CurrentStockId">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{07AE29A6-E2F5-412D-AC6A-A673CA240487}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="HistoryByMinuteURL">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
       DTS:DTSID="{34A98D48-2491-471C-8B1C-CDC92F4FED50}"
@@ -42,6 +62,16 @@
           </SOAP-ENV:Body>
         </SOAP-ENV:Envelope>
       </DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C5E1A819-0DED-42F1-B454-528F2F42ACCB}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="UpdatedUrl">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:LoggingOptions
@@ -431,10 +461,26 @@
   </DTS:LoggingOptions>
   <DTS:Executables>
     <DTS:Executable
+      DTS:refId="Package\Create Index"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{7885f34d-437a-45e8-b29e-00be24583045}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create Index"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{42F6D32A-F7BB-471D-AD95-CFAF6D29C0BE}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS (&#xA;&#x9;&#x9;SELECT 1&#xA;        FROM sys.indexes&#xA;        WHERE [name] = 'IX_stgPriceByMinute_StockId_Timestamp'&#xA;&#x9;)&#xA;CREATE CLUSTERED INDEX IX_stgPriceByMinute_StockId_Timestamp ON Stock.stgPriceByMinute(StockId, [Timestamp])&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
       DTS:refId="Package\Foreach Loop Container"
       DTS:CreationName="STOCK:FOREACHLOOP"
       DTS:Description="Foreach Loop Container"
-      DTS:Disabled="True"
       DTS:DTSID="{3c7671b4-8f25-4f66-b1ec-c2f4d940a287}"
       DTS:ExecutableType="STOCK:FOREACHLOOP"
       DTS:LocaleID="-1"
@@ -446,83 +492,51 @@
         <DTS:ObjectData>
           <FEEADO
             EnumType="EnumerateRowsInFirstTable"
-            VarName="User::Cryptos" />
+            VarName="User::Stocks" />
         </DTS:ObjectData>
       </DTS:ForEachEnumerator>
       <DTS:Variables />
-      <DTS:Executables />
-      <DTS:ForEachVariableMappings>
-        <DTS:ForEachVariableMapping
-          DTS:CreationName=""
-          DTS:DTSID="{b2dcf143-3ac2-40ff-9b36-85262d622d00}"
-          DTS:ObjectName="{A430A6F4-D3F8-44D5-9ABD-DDB322925D41}"
-          DTS:ValueIndex="0"
-          DTS:VariableName="User::CurrentCryptoId" />
-      </DTS:ForEachVariableMappings>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Get Stock List"
-      DTS:CreationName="Microsoft.ExecuteSQLTask"
-      DTS:Description="Execute SQL Task"
-      DTS:DTSID="{425f684c-76d5-48aa-9cd6-ea0d4614e3aa}"
-      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Get Stock List"
-      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="0">
-      <DTS:Variables />
-      <DTS:ObjectData>
-        <SQLTask:SqlTaskData
-          SQLTask:Connection="{42F6D32A-F7BB-471D-AD95-CFAF6D29C0BE}"
-          SQLTask:SqlStatementSource="SELECT StockId&#xA;FROM [Lookup].[Stock]&#xA;WHERE [Enabled] = 1"
-          SQLTask:ResultType="ResultSetType_Rowset" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
-          <SQLTask:ResultBinding
-            SQLTask:ResultName="0"
-            SQLTask:DtsVariableName="User::Stocks" />
-        </SQLTask:SqlTaskData>
-      </DTS:ObjectData>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Import Crypto Data"
-      DTS:CreationName="Microsoft.Pipeline"
-      DTS:Description="Data Flow Task"
-      DTS:Disabled="True"
-      DTS:DTSID="{B77438D5-842F-4199-97B0-FE7FB5352F5B}"
-      DTS:ExecutableType="Microsoft.Pipeline"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Import Crypto Data"
-      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
-      <DTS:Variables />
-      <DTS:LoggingOptions
-        DTS:FilterKind="0"
-        DTS:LoggingMode="2" />
-      <DTS:ObjectData>
-        <pipeline
-          version="1">
-          <components>
-            <component
-              refId="Package\Import Crypto Data\Call CryptoCompare API"
-              componentClassID="Microsoft.ManagedComponentHost"
-              contactInfo="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum.;Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;8"
-              description="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum."
-              name="Call CryptoCompare API"
-              validateExternalMetadata="False"
-              version="11">
-              <properties>
-                <property
-                  dataType="System.String"
-                  description="Stores the source code of the component"
-                  isArray="true"
-                  name="SourceCode"
-                  state="cdata">
-                  <arrayElements
-                    arrayElementCount="36">
-                    <arrayElement
-                      dataType="System.String"><![CDATA[PriceData.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[using System;
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Loop Container\Download Stock Data"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{B77438D5-842F-4199-97B0-FE7FB5352F5B}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Download Stock Data"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0"
+            DTS:LoggingMode="2" />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API"
+                  componentClassID="Microsoft.ManagedComponentHost"
+                  contactInfo="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum.;Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;8"
+                  description="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum."
+                  name="Call CryptoCompare API"
+                  validateExternalMetadata="False"
+                  version="11">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Stores the source code of the component"
+                      isArray="true"
+                      name="SourceCode"
+                      state="cdata">
+                      <arrayElements
+                        arrayElementCount="36">
+                        <arrayElement
+                          dataType="System.String"><![CDATA[PriceData.cs]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -532,7 +546,7 @@ namespace SC_2d143923421e4fc199c2060b8d062f7f
     class PriceData
     {
         public Int64 Time { get; set; }
-        public string CryptoId { get; set; }
+        public string StockId { get; set; }
         public decimal Close { get; set; }
         public decimal High { get; set; }
         public decimal Low { get; set; }
@@ -541,12 +555,12 @@ namespace SC_2d143923421e4fc199c2060b8d062f7f
         public decimal VolumeTo { get; set; }
     }
 }]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[main.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[#region Help:  Introduction to the Script Component
+                        <arrayElement
+                          dataType="System.String"><![CDATA[main.cs]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[#region Help:  Introduction to the Script Component
 /* The Script Component allows you to perform virtually any operation that can be accomplished in
  * a .Net application within the context of an Integration Services data flow.
  *
@@ -661,8 +675,8 @@ public class ScriptMain : UserComponent
 
     public override void CreateNewOutputRows()
     {
-        string cryptoId = Variables.CryptoId;
-        string url = Variables.Url;
+        string stockId = Variables.CurrentStockId;
+        string url = Variables.UpdatedUrl;
 
         var request = (HttpWebRequest)WebRequest.Create(url);
 
@@ -692,7 +706,7 @@ public class ScriptMain : UserComponent
 
             PriceDataBuffer.AddRow();
             PriceDataBuffer.Timestamp = p.Time;
-            PriceDataBuffer.CryptoId = cryptoId;
+            PriceDataBuffer.StockId = stockId;
             PriceDataBuffer.PriceDate = dtDateTime;
             PriceDataBuffer.ClosePrice = p.Close;
             PriceDataBuffer.HighPrice = p.High;
@@ -705,12 +719,12 @@ public class ScriptMain : UserComponent
 
 }
 ]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[PriceResponse.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[using System;
+                        <arrayElement
+                          dataType="System.String"><![CDATA[PriceResponse.cs]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -731,12 +745,12 @@ namespace SC_2d143923421e4fc199c2060b8d062f7f
     }
 }
 ]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[BufferWrapper.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+                        <arrayElement
+                          dataType="System.String"><![CDATA[BufferWrapper.cs]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
 *  Microsoft SQL Server Integration Services buffer wrappers
 *  This module defines classes for accessing data flow buffers
 *  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
@@ -778,14 +792,14 @@ public class PriceDataBuffer: ScriptBuffer
         }
     }
 
-    public String CryptoId
+    public String StockId
     {
         set
         {
             this[1] = value;
         }
     }
-    public bool CryptoId_IsNull
+    public bool StockId_IsNull
     {
         set
         {
@@ -971,12 +985,12 @@ public class PriceDataBuffer: ScriptBuffer
 
 }
 ]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[ComponentWrapper.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+                        <arrayElement
+                          dataType="System.String"><![CDATA[ComponentWrapper.cs]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
 *  Microsoft SQL Server Integration Services component wrapper
 *  This module defines the base class for your component
 *  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
@@ -1057,30 +1071,30 @@ public class Variables
         ParentComponent = Component;
     }
 
-    public String CryptoId
+    public String CurrentStockId
     {
         get
         {
-            return (String)(ParentComponent.ReadOnlyVariables["CryptoId"].GetValueWithContext(ScriptComponent.EvaluatorContext));
+            return (String)(ParentComponent.ReadOnlyVariables["CurrentStockId"].GetValueWithContext(ScriptComponent.EvaluatorContext));
         }
     }
 
-    public String Url
+    public String UpdatedUrl
     {
         get
         {
-            return (String)(ParentComponent.ReadOnlyVariables["Url"].GetValueWithContext(ScriptComponent.EvaluatorContext));
+            return (String)(ParentComponent.ReadOnlyVariables["UpdatedUrl"].GetValueWithContext(ScriptComponent.EvaluatorContext));
         }
     }
 
 }
 ]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[Properties\Resources.resx]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[Properties\Resources.resx]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1197,12 +1211,12 @@ public class Variables
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[SC_2d143923421e4fc199c2060b8d062f7f.csproj]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[SC_2d143923421e4fc199c2060b8d062f7f.csproj]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -1292,12 +1306,12 @@ public class Variables
     </VisualStudio>
   </ProjectExtensions>
 </Project>]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[Properties\Settings.Designer.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+                        <arrayElement
+                          dataType="System.String"><![CDATA[Properties\Settings.Designer.cs]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
 // <auto-generated>
 //     This code was generated by a tool.
 //
@@ -1325,18 +1339,18 @@ namespace SC_2d143923421e4fc199c2060b8d062f7f.Properties {
     }
 }
 ]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[Project]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF16LE]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[Project]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[UTF16LE]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
   <msb:PropertyGroup>
     <msb:CodeName>SC_2d143923421e4fc199c2060b8d062f7f</msb:CodeName>
     <msb:Language>msBuild</msb:Language>
     <msb:DisplayName>SC_2d143923421e4fc199c2060b8d062f7f</msb:DisplayName>
-    <msb:ProjectId>{01924D1F-39D4-42E6-B5C5-0C81E742152C}</msb:ProjectId>
+    <msb:ProjectId>{29A19EA8-305C-4CE5-8B9B-9326C95DE2E0}</msb:ProjectId>
   </msb:PropertyGroup>
   <msb:ItemGroup>
     <msb:Project Include="SC_2d143923421e4fc199c2060b8d062f7f.csproj" />
@@ -1352,12 +1366,12 @@ namespace SC_2d143923421e4fc199c2060b8d062f7f.Properties {
     <msb:File Include="Properties\Settings.Designer.cs" />
   </msb:ItemGroup>
 </c:Project>]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[Properties\AssemblyInfo.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[using System.Reflection;
+                        <arrayElement
+                          dataType="System.String"><![CDATA[Properties\AssemblyInfo.cs]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
 
 //
@@ -1386,24 +1400,24 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyVersion("1.0.0.0")]
 ]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[Properties\Settings.settings]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[Properties\Settings.settings]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
 <SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
   <Profiles>
     <Profile Name="(Default)" />
   </Profiles>
   <Settings />
 </SettingsFile>]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[Properties\Resources.Designer.cs]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+                        <arrayElement
+                          dataType="System.String"><![CDATA[Properties\Resources.Designer.cs]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
 // <auto-generated>
 //     This code was generated by a tool.
 //
@@ -1470,29 +1484,29 @@ namespace SC_2d143923421e4fc199c2060b8d062f7f.Properties {
     }
 }
 ]]></arrayElement>
-                  </arrayElements>
-                </property>
-                <property
-                  dataType="System.String"
-                  description="Stores the binary representation of the component"
-                  isArray="true"
-                  name="BinaryCode"
-                  state="cdata">
-                  <arrayElements
-                    arrayElementCount="2">
-                    <arrayElement
-                      dataType="System.String"><![CDATA[SC_2d143923421e4fc199c2060b8d062f7f.dll]]></arrayElement>
-                    <arrayElement
-                      dataType="System.String"><![CDATA[TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                      </arrayElements>
+                    </property>
+                    <property
+                      dataType="System.String"
+                      description="Stores the binary representation of the component"
+                      isArray="true"
+                      name="BinaryCode"
+                      state="cdata">
+                      <arrayElements
+                        arrayElementCount="2">
+                        <arrayElement
+                          dataType="System.String"><![CDATA[SC_2d143923421e4fc199c2060b8d062f7f.dll]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
-ZGUuDQ0KJAAAAAAAAABQRQAATAEDAM942loAAAAAAAAAAOAAIiALATAAACgAAAAIAAAAAAAACkYA
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAM+Z51oAAAAAAAAAAOAAIiALATAAACgAAAAIAAAAAAAAPkYA
 AAAgAAAAYAAAAAAAEAAgAAAAAgAABAAAAAAAAAAGAAAAAAAAAACgAAAAAgAAAAAAAAMAYIUAABAA
-ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAALhFAABPAAAAAGAAAEgEAAAAAAAAAAAAAAAAAAAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAOxFAABPAAAAAGAAAEgEAAAAAAAAAAAAAAAAAAAA
 AAAAAIAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAECYAAAAgAAAAKAAAAAIA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAARCYAAAAgAAAAKAAAAAIA
 AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAEgEAAAAYAAAAAYAAAAqAAAAAAAAAAAAAAAAAABAAABA
-LnJlbG9jAAAMAAAAAIAAAAACAAAAMAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAADs
-RQAAAAAAAEgAAAACAAUA7CUAABQfAAABAAAAAAAAAABFAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+LnJlbG9jAAAMAAAAAIAAAAACAAAAMAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAAAg
+RgAAAAAAAEgAAAACAAUA7CUAAEgfAAABAAAAAAAAADRFAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKBAAAAoqHgIoEQAACiobMAkAfQEAAAEAABECewMAAARv
 IgAABgoCewMAAARvIwAABigSAAAKdCEAAAElcgEAAHBvEwAACiVvFAAACnIJAABwciEAAHBvFQAA
 Cm8WAAAKdCUAAAFvFwAACnMYAAAKbxkAAAoLAnsBAAAEB28BAAArDN4NbxsAAAooHAAACib+Gghv
@@ -1512,158 +1526,158 @@ KCwAAAoCAnMgAAAGfQIAAAQCAnMhAAAGfQMAAAQqBipuAnsEAAAELBICewQAAARvGQAABgIUfQQA
 AAQqAAAAEzAFAEkAAAACAAARFgorLgQGlA4EcuAAAHAoLQAACjMZAgUGmgIEBpQoLgAACg4EcwUA
 AAZ9BAAABAYXWAoGAzLOAm8fAAAGAm8cAAAGAigdAAAGKjoCKC8AAAoCA30FAAAEKjoCKC8AAAoC
 A30GAAAEKpYCewYAAARvMAAACnL0AABwbzEAAAooMgAACm8zAAAKdDMAAAEqlgJ7BgAABG8wAAAK
-cgYBAHBvMQAACigyAAAKbzMAAAp0MwAAASoeAnsHAAAEKiICA30HAAAEKh4CewgAAAQqIgIDfQgA
+chIBAHBvMQAACigyAAAKbzMAAAp0MwAAASoeAnsHAAAEKiICA30HAAAEKh4CewgAAAQqIgIDfQgA
 AAQqHgJ7CQAABCoiAgN9CQAABCoeAnsKAAAEKiICA30KAAAEKh4CewsAAAQqIgIDfQsAAAQqHgJ7
 DAAABCoiAgN9DAAABCoeAnsNAAAEKiICA30NAAAEKh4CKC8AAAoqHgJ7DgAABCoiAgN9DgAABCoe
 AnsPAAAEKiICA30PAAAEKh4CexAAAAQqIgIDfRAAAAQqHgJ7EQAABCoiAgN9EQAABCoeAnsSAAAE
 KiICA30SAAAEKh4CexMAAAQqIgIDfRMAAAQqHgJ7FAAABCoiAgN9FAAABCoeAnsVAAAEKiICA30V
-AAAEKq5+FgAABC0ecg4BAHDQCQAAAig0AAAKbzUAAApzNgAACoAWAAAEfhYAAAQqGn4XAAAEKh4C
+AAAEKq5+FgAABC0ecigBAHDQCQAAAig0AAAKbzUAAApzNgAACoAWAAAEfhYAAAQqGn4XAAAEKh4C
 gBcAAAQqGn4YAAAEKh4CKDcAAAoqLnNJAAAGgBgAAAQqQlNKQgEAAQAAAAAADAAAAHY0LjAuMzAz
-MTkAAAAABQBsAAAAiA0AACN+AAD0DQAA7AwAACNTdHJpbmdzAAAAAOAaAACAAQAAI1VTAGAcAAAQ
-AAAAI0dVSUQAAABwHAAApAIAACNCbG9iAAAAAAAAAAIAAAFXFaIJCQkAAAD6ATMAFgAAAQAAADYA
+MTkAAAAABQBsAAAAiA0AACN+AAD0DQAABA0AACNTdHJpbmdzAAAAAPgaAACcAQAAI1VTAJQcAAAQ
+AAAAI0dVSUQAAACkHAAApAIAACNCbG9iAAAAAAAAAAIAAAFXFaIJCQkAAAD6ATMAFgAAAQAAADYA
 AAAKAAAAGAAAAEoAAAArAAAANwAAAD0AAAACAAAABgAAACYAAAA2AAAAAgAAAAEAAAAHAAAAAQAA
-AAEAAAAAAJAGAQAAAAAABgBABQsKBgDUBQsKBgCMBO0JDwB/CgAABgC5BFoIBgAjBVoIBgAEBVoI
-BgC7BVoIBgBgBVoIBgB5BVoIBgDQBFoIBgDrBD8GCgCUBVcDDgCzCToIBgA6AIsAPwDLCQAABgBC
-A6gHBgCkCKgHCgBqCVcDEgBbCVcDCgDqCFcDBgByBqgHCgDJC1cDBgBxC6gHBgBUBAsKBgBvBO0J
-BgB7CSsKBgDeCCUIFgA/BHoGFgCgBHoGFgCyAxAIFgAGDHgLFgACDHgLFgCACHgLFgBsCPYAFgDo
-A3gLFgDkA3gLBgCPB1wABgAzCVwABgBACVwAGgCnDAQLGgCeCwQLBgCUAqgHBgAAA6gHBgBBAKgH
-BgCUCKgHHgARAIsJHgABAIsJXwBbDAAAHgAiAIsJBgBZBqgHBgCFA6gHBgAMA6gHBgDiDFoIAAAA
-AEcAAAAAAAEAAQABABAABQgAABAAAQABAAEAEABLCQAATQACAAUAAQAQAKsLAABdAAIAGwABABAA
-LwsAAGEABQAgAAEAEADJCgAAYQAGACEAAAAQAPQDGwZhAAcAJAAAABAAeAAbBmEADgAzAAAAEAAy
-Co4KYQAWAEQAAAEQAPgKjgp9ABgASAABAAELEQEGAC8LFQEGAMkKGQEGAEsJHQEBALkLIQEBALkL
-IQEBAI0BJQEBAHcBKAEBAEUBKwEBABUBLgEBACACNgEBANQBNgEBAGcCKwEBAGEBNgEBACsBJQEB
-AKcBOQEBAL4BOQEBAFICOQEBAAoCOQEBAO4BOQEBADgCOQERAOcHPQERAKIDQQERAOQCRQFQIAAA
-AADGAPIFBgABAFggAAAAAMYA/QUGAAEAYCAAAAAAxgBdCwYAAQAIIgAAAACGGNYJBgABABsiAAAA
-AIYY1gmkAAEAJiIAAAAAhgglCUkBBAA1IgAAAACGCF8HTgEFAEwiAAAAAIYIswAQAAYAViIAAAAA
-hgi4Bk4BBwBtIgAAAACGCCoEUwEIAHwiAAAAAIYIIAdOAQkAkyIAAAAAhgisAlkBCgCiIgAAAACG
-CMwGTgELALkiAAAAAIYIuwJZAQwAyCIAAAAAhgjiBk4BDQDfIgAAAACGCNcCWQEOAO4iAAAAAIYI
-DAdOAQ8ABSMAAAAAhgjYB1kBEAAUIwAAAACGCDUHTgERACsjAAAAAIYI0QhZARIAOiMAAAAAhghL
-B04BEwBRIwAAAACGCMkCWQEUAGAjAAAAAIYI9wZOARUAdyMAAAAAhgCbDAYAFgB/IwAAAACGAIML
-BgAWAIcjAAAAAIYAhgugABYAjyMAAAAAhhjWCQYAFgCvIwAAAADGAU8LBgAWALEjAAAAAIEAxAAG
-ABYA0CMAAAAAxgAyDF8BFgCvIwAAAADGAV0LBgAaACUkAAAAAIYY1glrARoANCQAAAAAhhjWCWsB
-GwBDJAAAAACGCKYAVAAcAGkkAAAAAIYIfAdUABwAjyQAAAAAhgjKA1QAHACXJAAAAACGCNcDEAAc
-AKAkAAAAAIYIeANxAR0AqCQAAAAAhgiBAwEAHQCxJAAAAACGCNgAoAAeALkkAAAAAIYI5wBOAR4A
-wiQAAAAAhghmAHUBHwDKJAAAAACGCG8AfgEfANMkAAAAAIYIrgiIASAA2yQAAAAAhgi5CEkBIADk
-JAAAAACGCK8HiAEhAOwkAAAAAIYIvAdJASEA9SQAAAAAhgiyDKAAIgD9JAAAAACGCMgMTgEiAAYl
-AAAAAIYY1gkGACMADiUAAAAAhggwA4gBIwAWJQAAAACGCDkDSQEjAB8lAAAAAIYIpgBUACQAJyUA
-AAAAhgizABAAJAAwJQAAAACGCA4EjAElADglAAAAAIYIGARZASUAQSUAAAAAhghgBowBJgBJJQAA
-AACGCGkGWQEmAFIlAAAAAIYIiwyMAScAWiUAAAAAhgiTDFkBJwBjJQAAAACGCPMHjAEoAGslAAAA
-AIYI/AdZASgAdCUAAAAAhgjJB4wBKQB8JQAAAACGCNgHWQEpAIUlAAAAAIYIxAiMASoAjSUAAAAA
-hgjRCFkBKgAGJQAAAACGGNYJBgArAAYlAAAAAIMY1gkGACsAliUAAAAAkwh3CZEBKwDCJQAAAACT
-CIoDlgErAMklAAAAAJMIlgObASsA0SUAAAAAlgiSC6EBLADYJQAAAACGGNYJBgAsAOAlAAAAAJEY
-3AmmASwAAAABAHAJAAACANMKAAADAPgIAAABAAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkGAAAB
-AAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkG
-AAABAAkGAAABAAkGAAABAAkGAAABAFULAAACAOMJAAADAEcLAAAEAPgIAAABAM8LAAABAM8LAAAB
-AAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkG
-AAABAAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkGAAABAAkGCQDWCQEAEQDWCQYAGQDWCQoAKQDW
-CRAAMQDWCRAAOQDWCRAAQQDWCRAASQDWCRAAUQDWCRAAWQDWCRAAYQDWCRAAaQDWCQYAyQDWCQYA
-0QDWCQYA8QDWCRUAuQDyBQYAuQD9BQYAAQE4BC4AAQGhAhAAAQE7CzUAGQHAADsAAQECBEEAIQGE
-B0cAOQHWCU0AQQGKAlQAcQAPBlgAkQD0AlQASQGiDGQADADICXIAFADZC4IAiQDWCYcAiQAACpUA
-iQBLA5sAFAA+DKAAYQEiBAYAcQDWCQYAmQDWCaQAmQCfB64AmQB0BwEAcQHWCRAAmQCbDAYAmQCD
-CwYAmQCGC6AAuQDWCQYAuQBQALgAuQDnCr8AwQDWCQYAuQC9CsUAeQGWB8sAuQB2DNIAgQFHDNgA
-oQEeA98AoQHeDOgA2QDWCe4A+QDWCQYALgALANwBLgATAOUBLgAbAAQCLgAjAA0CLgArADYCLgAz
+AAEAAAAAAKAGAQAAAAAABgBQBSEKBgDkBSEKBgCcBAMKDwCVCgAABgDJBHAIBgAzBXAIBgAUBXAI
+BgDLBXAIBgBwBXAIBgCJBXAIBgDgBHAIBgD7BE8GCgCkBWcDDgDJCVAIBgA6AIsAPwDhCQAABgBS
+A74HBgC6CL4HCgCACWcDEgBxCWcDCgAACWcDBgCCBr4HCgDfC2cDBgCHC74HBgBkBCEKBgB/BAMK
+BgCRCUEKBgD0CDsIFgBPBIoGFgCwBIoGFgDCAyYIFgAcDI4LFgAYDI4LFgCWCI4LFgCCCAcBFgD4
+A44LFgD0A44LBgClB1wABgBJCVwABgBWCVwAGgC9DBoLGgC0CxoLBgCkAr4HBgAQA74HBgBBAL4H
+BgCqCL4HHgARAKEJHgABAKEJXwBxDAAAHgAiAKEJBgBpBr4HBgCVA74HBgAcA74HBgD4DHAIAAAA
+AEcAAAAAAAEAAQABABAAGwgAABAAAQABAAEAEABhCQAATQACAAUAAQAQAMELAABdAAIAGwABABAA
+RQsAAGEABQAgAAEAEADfCgAAYQAGACEAAAAQAAQEKwZhAAcAJAAAABAAeAArBmEADgAzAAAAEABI
+CqQKYQAWAEQAAAEQAA4LpAp9ABgASAABABcLEQEGAEULFQEGAN8KGQEGAGEJHQEBAM8LIQEBAM8L
+IQEBAJ0BJQEBAIcBKAEBAFUBKwEBACYBLgEBADACNgEBAOQBNgEBAHcCKwEBAHEBNgEBADwBJQEB
+ALcBOQEBAM4BOQEBAGICOQEBABoCOQEBAP4BOQEBAEgCOQERAP0HPQERALIDQQERAPQCRQFQIAAA
+AADGAAIGBgABAFggAAAAAMYADQYGAAEAYCAAAAAAxgBzCwYAAQAIIgAAAACGGOwJBgABABsiAAAA
+AIYY7AmkAAEAJiIAAAAAhgg7CUkBBAA1IgAAAACGCG4HTgEFAEwiAAAAAIYIsgAQAAYAViIAAAAA
+hgjIBk4BBwBtIgAAAACGCDoEUwEIAHwiAAAAAIYILwdOAQkAkyIAAAAAhgi8AlkBCgCiIgAAAACG
+CNsGTgELALkiAAAAAIYIywJZAQwAyCIAAAAAhgjxBk4BDQDfIgAAAACGCOcCWQEOAO4iAAAAAIYI
+GwdOAQ8ABSMAAAAAhgjuB1kBEAAUIwAAAACGCEQHTgERACsjAAAAAIYI5whZARIAOiMAAAAAhgha
+B04BEwBRIwAAAACGCNkCWQEUAGAjAAAAAIYIBgdOARUAdyMAAAAAhgCxDAYAFgB/IwAAAACGAJkL
+BgAWAIcjAAAAAIYAnAugABYAjyMAAAAAhhjsCQYAFgCvIwAAAADGAWULBgAWALEjAAAAAIEA1QAG
+ABYA0CMAAAAAxgBIDF8BFgCvIwAAAADGAXMLBgAaACUkAAAAAIYY7AlrARoANCQAAAAAhhjsCWsB
+GwBDJAAAAACGCL4AVAAcAGkkAAAAAIYIiwdUABwAjyQAAAAAhgjaA1QAHACXJAAAAACGCOcDEAAc
+AKAkAAAAAIYIiANxAR0AqCQAAAAAhgiRAwEAHQCxJAAAAACGCOkAoAAeALkkAAAAAIYI+ABOAR4A
+wiQAAAAAhghmAHUBHwDKJAAAAACGCG8AfgEfANMkAAAAAIYIxAiIASAA2yQAAAAAhgjPCEkBIADk
+JAAAAACGCMUHiAEhAOwkAAAAAIYI0gdJASEA9SQAAAAAhgjIDKAAIgD9JAAAAACGCN4MTgEiAAYl
+AAAAAIYY7AkGACMADiUAAAAAhghAA4gBIwAWJQAAAACGCEkDSQEjAB8lAAAAAIYIpgBUACQAJyUA
+AAAAhgiyABAAJAAwJQAAAACGCB4EjAElADglAAAAAIYIKARZASUAQSUAAAAAhghwBowBJgBJJQAA
+AACGCHkGWQEmAFIlAAAAAIYIoQyMAScAWiUAAAAAhgipDFkBJwBjJQAAAACGCAkIjAEoAGslAAAA
+AIYIEghZASgAdCUAAAAAhgjfB4wBKQB8JQAAAACGCO4HWQEpAIUlAAAAAIYI2giMASoAjSUAAAAA
+hgjnCFkBKgAGJQAAAACGGOwJBgArAAYlAAAAAIMY7AkGACsAliUAAAAAkwiNCZEBKwDCJQAAAACT
+CJoDlgErAMklAAAAAJMIpgObASsA0SUAAAAAlgioC6EBLADYJQAAAACGGOwJBgAsAOAlAAAAAJEY
+8gmmASwAAAABAIYJAAACAOkKAAADAA4JAAABABkGAAABABkGAAABABkGAAABABkGAAABABkGAAAB
+ABkGAAABABkGAAABABkGAAABABkGAAABABkGAAABABkGAAABABkGAAABABkGAAABABkGAAABABkG
+AAABABkGAAABABkGAAABABkGAAABAGsLAAACAPkJAAADAF0LAAAEAA4JAAABAOULAAABAOULAAAB
+ABkGAAABABkGAAABABkGAAABABkGAAABABkGAAABABkGAAABABkGAAABABkGAAABABkGAAABABkG
+AAABABkGAAABABkGAAABABkGAAABABkGAAABABkGAAABABkGCQDsCQEAEQDsCQYAGQDsCQoAKQDs
+CRAAMQDsCRAAOQDsCRAAQQDsCRAASQDsCRAAUQDsCRAAWQDsCRAAYQDsCRAAaQDsCQYAyQDsCQYA
+0QDsCQYA8QDsCRUAuQACBgYAuQANBgYAAQFIBC4AAQGxAhAAAQFRCzUAGQHRADsAAQESBEEAIQGa
+B0cAOQHsCU0AQQGaAlQAcQAfBlgAkQAEA1QASQG4DGQADADeCXIAFADvC4IAiQDsCYcAiQAWCpUA
+iQBbA5sAFABUDKAAYQEyBAYAcQDsCQYAmQDsCaQAmQC1B64AmQCDBwEAcQHsCRAAmQCxDAYAmQCZ
+CwYAmQCcC6AAuQDsCQYAuQBQALgAuQD9Cr8AwQDsCQYAuQDTCsUAeQGsB8sAuQCMDNIAgQFdDNgA
+oQEuA98AoQH0DOgA2QDsCe4A+QDsCQYALgALANwBLgATAOUBLgAbAAQCLgAjAA0CLgArADYCLgAz
 ADYCLgA7ADYCLgBDAA0CLgBLADwCLgBTADYCLgBbAFMCQwBjAJ0C4QBrAJ0CAQFrAJ0CIQFrAJ0C
 IwFzAJ0CQQFrAJ0CYQFrAJ0CgQFrAJ0CoQFrAJ0CwQFrAJ0C4QFrAJ0CAQJrAJ0CIQJrAJ0CQQJr
 AJ0CYQJrAJ0CgQJrAJ0CoQJrAJ0CAQNrAJ0CgARrAJ0CiQR7AAQCoARrAJ0CqQR7AAQCwARrAJ0C
 4ARrAJ0CAAVrAJ0CIAVrAJ0CQAVrAJ0CYAVrAJ0CgAVrAJ0CoAVrAJ0CwAVrAJ0C4AVrAJ0CAAZr
 AJ0CIAZrAJ0CYAZrAJ0CgAZrAJ0CoAZrAJ0CwAZrAJ0C4AZrAJ0CAAdrAJ0CIAdrAJ0CQAdrAJ0C
 YAdrAJ0CgAdrAJ0CoAdrAJ0CwAdrAJ0C4AdrAJ0CAAhrAJ0CIAhrAJ0CQAhrAJ0CGwC0AAMAAQAG
-ABMABwAVAAgAHAAJACQACgAmAAAAKQmqAQAAYweuAQAAtwCyAQAAvAauAQAALgS2AQAAJAeuAQAA
-sAK7AQAA0AauAQAAvwK7AQAA5gauAQAA2wK7AQAAEAeuAQAA3Ae7AQAAOQeuAQAA1Qi7AQAATweu
-AQAAzQK7AQAA+wauAQAAtwCyAQAAgAeyAQAABQSyAQAAhQPAAQAA6wCuAQAAfQDEAQAAvQiqAQAA
-wAeqAQAAzAyuAQAAUgOqAQAAtwCyAQAAHAS7AQAAbQa7AQAAlwy7AQAAAAi7AQAA3Ae7AQAA1Qi7
-AQAAewnNAQAAqgPSAQAAlgvXAQEABgADAAEABwAFAAEACAAHAAEACQAJAAEACgALAAEACwANAAEA
+ABMABwAVAAgAHAAJACQACgAmAAAAPwmqAQAAcgeuAQAAyQCyAQAAzAauAQAAPgS2AQAAMweuAQAA
+wAK7AQAA3wauAQAAzwK7AQAA9QauAQAA6wK7AQAAHweuAQAA8ge7AQAASAeuAQAA6wi7AQAAXgeu
+AQAA3QK7AQAACgeuAQAAwgCyAQAAjweyAQAAFQSyAQAAlQPAAQAA/ACuAQAAfQDEAQAA0wiqAQAA
+1geqAQAA4gyuAQAAYgOqAQAAyQCyAQAALAS7AQAAfQa7AQAArQy7AQAAFgi7AQAA8ge7AQAA6wi7
+AQAAkQnNAQAAugPSAQAArAvXAQEABgADAAEABwAFAAEACAAHAAEACQAJAAEACgALAAEACwANAAEA
 DAAPAAEADQARAAEADgATAAEADwAVAAEAEAAXAAEAEQAZAAEAEgAbAAEAEwAdAAEAFAAfAAEAFQAh
 AAEAFgAjAAEAFwAlAAIAIgAnAAIAIwApAAIAJAArAAEAJQArAAIAJgAtAAEAJwAtAAIAKAAvAAEA
 KQAvAAIAKgAxAAEAKwAxAAIALAAzAAEALQAzAAIALgA1AAEALwA1AAIAMAA3AAEAMQA3AAIAMwA5
 AAEANAA5AAIANQA7AAEANgA7AAIANwA9AAEAOAA9AAIAOQA/AAEAOgA/AAIAOwBBAAEAPABBAAIA
 PQBDAAEAPgBDAAIAPwBFAAEAQABFAAIAQQBHAAEAQgBHAAIARQBJAAIARgBLAAEARwBLAAIASABN
-AGsAewAEgAAAAQAAAAAAAAAAAAAAAAAbBgAABAAAAAAAAAAAAAAA9gCCAAAAAAAOAAAAAAAAAAAA
-AAD/AOULAAAAAAQAAAAAAAAAAAAAAAgBGQsAAAAADgAAAAAAAAAAAAAA/wARDAAAAAAEAAAAAAAA
-AAAAAAD2AKgHAAAAAAQAAAAAAAAAAAAAAPYABAsAAAAADgAAAAAAAAAAAAAA/wACCQAAAAAAAAAA
-AQAAADwKAAA1AF8AAAAASURUU1ZhcmlhYmxlMTAwAElEVFNWYXJpYWJsZXMxMDAASURUU0V2YWx1
+AGsAewAEgAAAAQAAAAAAAAAAAAAAAAArBgAABAAAAAAAAAAAAAAA9gCCAAAAAAAOAAAAAAAAAAAA
+AAD/APsLAAAAAAQAAAAAAAAAAAAAAAgBLwsAAAAADgAAAAAAAAAAAAAA/wAnDAAAAAAEAAAAAAAA
+AAAAAAD2AL4HAAAAAAQAAAAAAAAAAAAAAPYAGgsAAAAADgAAAAAAAAAAAAAA/wAYCQAAAAAAAAAA
+AQAAAFIKAAA1AF8AAAAASURUU1ZhcmlhYmxlMTAwAElEVFNWYXJpYWJsZXMxMDAASURUU0V2YWx1
 YXRvckNvbnRleHQxMDAATGlzdGAxAEludDY0ADxNb2R1bGU+AEdldE91dHB1dElEAFN5c3RlbS5J
 TwBnZXRfRGF0YQBzZXRfRGF0YQBQcmljZURhdGEAbXNjb3JsaWIAU3lzdGVtLkNvbGxlY3Rpb25z
-LkdlbmVyaWMAZ2V0X0NyeXB0b0lkAHNldF9DcnlwdG9JZABBZGQATWFya091dHB1dHNGaW5pc2hl
-ZABnZXRfQWdncmVnYXRlZABzZXRfQWdncmVnYXRlZABTeXN0ZW0uQ29sbGVjdGlvbnMuU3BlY2lh
-bGl6ZWQAPERhdGE+a19fQmFja2luZ0ZpZWxkADxDcnlwdG9JZD5rX19CYWNraW5nRmllbGQAPEFn
-Z3JlZ2F0ZWQ+a19fQmFja2luZ0ZpZWxkADxUaW1lPmtfX0JhY2tpbmdGaWVsZAA8VHlwZT5rX19C
-YWNraW5nRmllbGQAPFJlc3BvbnNlPmtfX0JhY2tpbmdGaWVsZAA8Q2xvc2U+a19fQmFja2luZ0Zp
-ZWxkADxIaWdoPmtfX0JhY2tpbmdGaWVsZAA8VGltZUZyb20+a19fQmFja2luZ0ZpZWxkADxWb2x1
-bWVGcm9tPmtfX0JhY2tpbmdGaWVsZAA8T3Blbj5rX19CYWNraW5nRmllbGQAPFRpbWVUbz5rX19C
-YWNraW5nRmllbGQAPFZvbHVtZVRvPmtfX0JhY2tpbmdGaWVsZAA8TG93PmtfX0JhY2tpbmdGaWVs
-ZAA8Rmlyc3RWYWx1ZUluQXJyYXk+a19fQmFja2luZ0ZpZWxkAFJlYWRUb0VuZABEYXRlVGltZUtp
-bmQAc2V0X01ldGhvZABzZXRfQ2xvc2VQcmljZQBzZXRfSGlnaFByaWNlAHNldF9PcGVuUHJpY2UA
-c2V0X0xvd1ByaWNlAGRlZmF1bHRJbnN0YW5jZQBnZXRfTWVzc2FnZQBJRGlzcG9zYWJsZQBSdW50
-aW1lVHlwZUhhbmRsZQBHZXRUeXBlRnJvbUhhbmRsZQBnZXRfVGltZQBzZXRfVGltZQBEYXRlVGlt
-ZQBUb0xvY2FsVGltZQBNaWNyb3NvZnQuU3FsU2VydmVyLkR0cy5QaXBlbGluZQBnZXRfVHlwZQBz
-ZXRfVHlwZQBnZXRfQ3VsdHVyZQBzZXRfQ3VsdHVyZQByZXNvdXJjZUN1bHR1cmUAQXBwbGljYXRp
-b25TZXR0aW5nc0Jhc2UAZ2V0X1Jlc3BvbnNlAHNldF9SZXNwb25zZQBIdHRwV2ViUmVzcG9uc2UA
-UHJpY2VSZXNwb25zZQBHZXRSZXNwb25zZQBnZXRfQ2xvc2UAc2V0X0Nsb3NlAERpc3Bvc2UAc2V0
-X1ByaWNlRGF0ZQBDcmVhdGUARWRpdG9yQnJvd3NhYmxlU3RhdGUAQ29tcGlsZXJHZW5lcmF0ZWRB
-dHRyaWJ1dGUARGVidWdnZXJOb25Vc2VyQ29kZUF0dHJpYnV0ZQBEZWJ1Z2dhYmxlQXR0cmlidXRl
-AEVkaXRvckJyb3dzYWJsZUF0dHJpYnV0ZQBBc3NlbWJseVRpdGxlQXR0cmlidXRlAEFzc2VtYmx5
-VHJhZGVtYXJrQXR0cmlidXRlAFRhcmdldEZyYW1ld29ya0F0dHJpYnV0ZQBBc3NlbWJseUNvbmZp
-Z3VyYXRpb25BdHRyaWJ1dGUAQXNzZW1ibHlEZXNjcmlwdGlvbkF0dHJpYnV0ZQBDb21waWxhdGlv
-blJlbGF4YXRpb25zQXR0cmlidXRlAEFzc2VtYmx5UHJvZHVjdEF0dHJpYnV0ZQBBc3NlbWJseUNv
-cHlyaWdodEF0dHJpYnV0ZQBTU0lTU2NyaXB0Q29tcG9uZW50RW50cnlQb2ludEF0dHJpYnV0ZQBB
-c3NlbWJseUNvbXBhbnlBdHRyaWJ1dGUAUnVudGltZUNvbXBhdGliaWxpdHlBdHRyaWJ1dGUAUHJl
-RXhlY3V0ZQBQb3N0RXhlY3V0ZQB2YWx1ZQBEZXNlcmlhbGl6ZQBTQ18yZDE0MzkyMzQyMWU0ZmMx
-OTljMjA2MGI4ZDA2MmY3ZgBTeXN0ZW0uUnVudGltZS5WZXJzaW9uaW5nAFN0cmluZwBnZXRfSGln
-aABzZXRfSGlnaABEZWNpbWFsAFN5c3RlbS5Db21wb25lbnRNb2RlbABTQ18yZDE0MzkyMzQyMWU0
-ZmMxOTljMjA2MGI4ZDA2MmY3Zi5kbGwAc2V0X0NyeXB0b0lkX0lzTnVsbABzZXRfQ2xvc2VQcmlj
-ZV9Jc051bGwAc2V0X0hpZ2hQcmljZV9Jc051bGwAc2V0X09wZW5QcmljZV9Jc051bGwAc2V0X0xv
-d1ByaWNlX0lzTnVsbABzZXRfUHJpY2VEYXRlX0lzTnVsbABzZXRfVm9sdW1lRnJvbV9Jc051bGwA
-c2V0X1ZvbHVtZVRvX0lzTnVsbABzZXRfVGltZXN0YW1wX0lzTnVsbABTZXROdWxsAGdldF9VcmwA
-R2V0UmVzcG9uc2VTdHJlYW0AZ2V0X0l0ZW0Ac2V0X0l0ZW0AU3lzdGVtAGdldF9UaW1lRnJvbQBz
-ZXRfVGltZUZyb20AZ2V0X1ZvbHVtZUZyb20Ac2V0X1ZvbHVtZUZyb20AcmVzb3VyY2VNYW4AZ2V0
-X09wZW4Ac2V0X09wZW4AU2NyaXB0TWFpbgBTeXN0ZW0uQ29uZmlndXJhdGlvbgBTeXN0ZW0uR2xv
-YmFsaXphdGlvbgBTeXN0ZW0uV2ViLlNjcmlwdC5TZXJpYWxpemF0aW9uAFN5c3RlbS5SZWZsZWN0
-aW9uAE5hbWVWYWx1ZUNvbGxlY3Rpb24AV2ViSGVhZGVyQ29sbGVjdGlvbgBJbnZhbGlkT3BlcmF0
-aW9uRXhjZXB0aW9uAGdldF9UaW1lVG8Ac2V0X1RpbWVUbwBnZXRfVm9sdW1lVG8Ac2V0X1ZvbHVt
-ZVRvAEN1bHR1cmVJbmZvAE91dHB1dE5hbWVNYXAAT3V0cHV0TWFwAE1pY3Jvc29mdC5TcWxTZXJ2
-ZXIuRFRTUnVudGltZVdyYXAAc2V0X1RpbWVzdGFtcABTdHJlYW1SZWFkZXIAVGV4dFJlYWRlcgBQ
-cmljZURhdGFCdWZmZXIAUGlwZWxpbmVCdWZmZXIAU2NyaXB0QnVmZmVyAGdldF9SZXNvdXJjZU1h
-bmFnZXIATWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuUnVudGltZS5XcmFwcGVyAEphdmFTY3JpcHRT
-ZXJpYWxpemVyAEdldEVudW1lcmF0b3IALmN0b3IALmNjdG9yAE91dHB1dElEcwBTeXN0ZW0uRGlh
-Z25vc3RpY3MAQWRkU2Vjb25kcwBTeXN0ZW0uUnVudGltZS5Db21waWxlclNlcnZpY2VzAFN5c3Rl
-bS5SZXNvdXJjZXMAU0NfMmQxNDM5MjM0MjFlNGZjMTk5YzIwNjBiOGQwNjJmN2YuUHJvcGVydGll
-cy5SZXNvdXJjZXMucmVzb3VyY2VzAERlYnVnZ2luZ01vZGVzAFNDXzJkMTQzOTIzNDIxZTRmYzE5
-OWMyMDYwYjhkMDYyZjdmLlByb3BlcnRpZXMAZ2V0X1JlYWRPbmx5VmFyaWFibGVzAEJ1ZmZlckNv
-bHVtbkluZGV4ZXMAR2V0Q29sdW1uSW5kZXhlcwBTZXR0aW5ncwBqcwBTeXN0ZW0uV2luZG93cy5G
-b3JtcwBTeXN0ZW0uV2ViLkV4dGVuc2lvbnMAQ29ubmVjdGlvbnMAZ2V0X0hlYWRlcnMAQnVmZmVy
-cwBGaW5pc2hPdXRwdXRzAENyZWF0ZU5ld091dHB1dFJvd3MAT2JqZWN0AFN5c3RlbS5OZXQAU2V0
-RW5kT2ZSb3dzZXQAZ2V0X0RlZmF1bHQARGlhbG9nUmVzdWx0AFVzZXJDb21wb25lbnQAUGFyZW50
-Q29tcG9uZW50AFNjcmlwdENvbXBvbmVudABnZXRfQ3VycmVudABNaWNyb3NvZnQuU3FsU2VydmVy
-LlR4U2NyaXB0AEh0dHBXZWJSZXF1ZXN0AE1pY3Jvc29mdC5TcWxTZXJ2ZXIuUGlwZWxpbmVIb3N0
-AFByaW1lT3V0cHV0AE1vdmVOZXh0AEdldFZhbHVlV2l0aENvbnRleHQAU2NyaXB0Q29tcG9uZW50
-RXZhbENvbnRleHQAZ2V0X0V2YWx1YXRvckNvbnRleHQAZ2V0X0xvdwBzZXRfTG93AEFkZFJvdwBT
-aG93AE1lc3NhZ2VCb3gAZ2V0X0ZpcnN0VmFsdWVJbkFycmF5AHNldF9GaXJzdFZhbHVlSW5BcnJh
-eQBnZXRfQXNzZW1ibHkAAAAHRwBFAFQAABdDAG8AbgB0AGUAbgB0AFQAeQBwAGUAACFhAHAAcABs
-AGkAYwBhAHQAaQBvAG4ALwBqAHMAbwBuAACAm0kAcwBOAHUAbABsACAAcAByAG8AcABlAHIAdAB5
-ACAAYwBhAG4AbgBvAHQAIABiAGUAIABzAGUAdAAgAHQAbwAgAEYAYQBsAHMAZQAuACAAQQBzAHMA
-aQBnAG4AIABhACAAdgBhAGwAdQBlACAAdABvACAAdABoAGUAIABjAG8AbAB1AG0AbgAgAGkAbgBz
-AHQAZQBhAGQALgAAE1AAcgBpAGMAZQBEAGEAdABhAAARQwByAHkAcAB0AG8ASQBkAAAHVQByAGwA
-AHFTAEMAXwAyAGQAMQA0ADMAOQAyADMANAAyADEAZQA0AGYAYwAxADkAOQBjADIAMAA2ADAAYgA4
-AGQAMAA2ADIAZgA3AGYALgBQAHIAbwBwAGUAcgB0AGkAZQBzAC4AUgBlAHMAbwB1AHIAYwBlAHMA
-AJMwddntD61BqOBvE4nSVQUABCABAQgDIAABBSABARERBCABAQ4FIAEBEXUSBwcODhIcFRFBARIg
-EiARRRFFBgABEoCBDgUgABKAiQUgAgEODgUgABKAkQUgABKAmQYgAQESgJkDIAAOBjABAR4ADgQK
-ARIcBgABEYCpDgYVEj0BEiAIIAAVEUEBEwAGFRFBARIgBCAAEwANIAgBCAgICAgICBGArQUgARFF
-DQQgABFFAyAAAgkgAwESUR0IElUFIAIBCBwDBwEIBgACCBJVDgUgAR0ICAUgABKAvQYgARKAwRwF
-AAASgMUGIAEcEoDJCAABEoDREYDVBSAAEoDZByACAQ4SgNkIt3pcVhk04IkIiYRdzYCAzJEIMb84
-Vq02TjUDBhI5AwYSFAMGEhgDBhIMAwYSXQIGDgIGCAIGAgcGFRI9ARIgAgYKAwYRWQMGEm0DBhJx
-AwYSKAQgAQEKBCABAQIFIAEBEUUFIAEBEVkLIAQBCB0IHRJRElUFIAEBEl0DIAAICCAAFRI9ARIg
-CSABARUSPQESIAMgAAoEIAARWQQAABJtBAAAEnEFAAEBEnEEAAASKAMAAAEDKAAKAygAAgMoAA4E
-KAARRQQoABFZAygACAgoABUSPQESIAQIABJtBAgAEnEECAASKAgBAAgAAAAAAB4BAAEAVAIWV3Jh
-cE5vbkV4Y2VwdGlvblRocm93cwEIAQACAAAAAAAoAQAjU0NfMmQxNDM5MjM0MjFlNGZjMTk5YzIw
-NjBiOGQwNjJmN2YAAAUBAAAAABYBABFDb3B5cmlnaHQgQCAgMjAxNwAASQEAGi5ORVRGcmFtZXdv
-cmssVmVyc2lvbj12NC41AQBUDhRGcmFtZXdvcmtEaXNwbGF5TmFtZRIuTkVUIEZyYW1ld29yayA0
-LjUEAQAAAAAAtAAAAM7K774BAAAAkQAAAGxTeXN0ZW0uUmVzb3VyY2VzLlJlc291cmNlUmVhZGVy
-LCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRv
-a2VuPWI3N2E1YzU2MTkzNGUwODkjU3lzdGVtLlJlc291cmNlcy5SdW50aW1lUmVzb3VyY2VTZXQC
-AAAAAAAAAAAAAABQQURQQURQtAAAAOBFAAAAAAAAAAAAAPpFAAAAIAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAADsRQAAAAAAAAAAAAAAAF9Db3JEbGxNYWluAG1zY29yZWUuZGxsAAAAAAD/JQAgABAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+LkdlbmVyaWMAZ2V0X1N0b2NrSWQAc2V0X1N0b2NrSWQAZ2V0X0N1cnJlbnRTdG9ja0lkAEFkZABN
+YXJrT3V0cHV0c0ZpbmlzaGVkAGdldF9BZ2dyZWdhdGVkAHNldF9BZ2dyZWdhdGVkAFN5c3RlbS5D
+b2xsZWN0aW9ucy5TcGVjaWFsaXplZAA8RGF0YT5rX19CYWNraW5nRmllbGQAPFN0b2NrSWQ+a19f
+QmFja2luZ0ZpZWxkADxBZ2dyZWdhdGVkPmtfX0JhY2tpbmdGaWVsZAA8VGltZT5rX19CYWNraW5n
+RmllbGQAPFR5cGU+a19fQmFja2luZ0ZpZWxkADxSZXNwb25zZT5rX19CYWNraW5nRmllbGQAPENs
+b3NlPmtfX0JhY2tpbmdGaWVsZAA8SGlnaD5rX19CYWNraW5nRmllbGQAPFRpbWVGcm9tPmtfX0Jh
+Y2tpbmdGaWVsZAA8Vm9sdW1lRnJvbT5rX19CYWNraW5nRmllbGQAPE9wZW4+a19fQmFja2luZ0Zp
+ZWxkADxUaW1lVG8+a19fQmFja2luZ0ZpZWxkADxWb2x1bWVUbz5rX19CYWNraW5nRmllbGQAPExv
+dz5rX19CYWNraW5nRmllbGQAPEZpcnN0VmFsdWVJbkFycmF5PmtfX0JhY2tpbmdGaWVsZABSZWFk
+VG9FbmQARGF0ZVRpbWVLaW5kAHNldF9NZXRob2QAc2V0X0Nsb3NlUHJpY2UAc2V0X0hpZ2hQcmlj
+ZQBzZXRfT3BlblByaWNlAHNldF9Mb3dQcmljZQBkZWZhdWx0SW5zdGFuY2UAZ2V0X01lc3NhZ2UA
+SURpc3Bvc2FibGUAUnVudGltZVR5cGVIYW5kbGUAR2V0VHlwZUZyb21IYW5kbGUAZ2V0X1RpbWUA
+c2V0X1RpbWUARGF0ZVRpbWUAVG9Mb2NhbFRpbWUATWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuUGlw
+ZWxpbmUAZ2V0X1R5cGUAc2V0X1R5cGUAZ2V0X0N1bHR1cmUAc2V0X0N1bHR1cmUAcmVzb3VyY2VD
+dWx0dXJlAEFwcGxpY2F0aW9uU2V0dGluZ3NCYXNlAGdldF9SZXNwb25zZQBzZXRfUmVzcG9uc2UA
+SHR0cFdlYlJlc3BvbnNlAFByaWNlUmVzcG9uc2UAR2V0UmVzcG9uc2UAZ2V0X0Nsb3NlAHNldF9D
+bG9zZQBEaXNwb3NlAHNldF9QcmljZURhdGUAQ3JlYXRlAEVkaXRvckJyb3dzYWJsZVN0YXRlAENv
+bXBpbGVyR2VuZXJhdGVkQXR0cmlidXRlAERlYnVnZ2VyTm9uVXNlckNvZGVBdHRyaWJ1dGUARGVi
+dWdnYWJsZUF0dHJpYnV0ZQBFZGl0b3JCcm93c2FibGVBdHRyaWJ1dGUAQXNzZW1ibHlUaXRsZUF0
+dHJpYnV0ZQBBc3NlbWJseVRyYWRlbWFya0F0dHJpYnV0ZQBUYXJnZXRGcmFtZXdvcmtBdHRyaWJ1
+dGUAQXNzZW1ibHlDb25maWd1cmF0aW9uQXR0cmlidXRlAEFzc2VtYmx5RGVzY3JpcHRpb25BdHRy
+aWJ1dGUAQ29tcGlsYXRpb25SZWxheGF0aW9uc0F0dHJpYnV0ZQBBc3NlbWJseVByb2R1Y3RBdHRy
+aWJ1dGUAQXNzZW1ibHlDb3B5cmlnaHRBdHRyaWJ1dGUAU1NJU1NjcmlwdENvbXBvbmVudEVudHJ5
+UG9pbnRBdHRyaWJ1dGUAQXNzZW1ibHlDb21wYW55QXR0cmlidXRlAFJ1bnRpbWVDb21wYXRpYmls
+aXR5QXR0cmlidXRlAFByZUV4ZWN1dGUAUG9zdEV4ZWN1dGUAdmFsdWUARGVzZXJpYWxpemUAU0Nf
+MmQxNDM5MjM0MjFlNGZjMTk5YzIwNjBiOGQwNjJmN2YAU3lzdGVtLlJ1bnRpbWUuVmVyc2lvbmlu
+ZwBTdHJpbmcAZ2V0X0hpZ2gAc2V0X0hpZ2gARGVjaW1hbABTeXN0ZW0uQ29tcG9uZW50TW9kZWwA
+U0NfMmQxNDM5MjM0MjFlNGZjMTk5YzIwNjBiOGQwNjJmN2YuZGxsAHNldF9TdG9ja0lkX0lzTnVs
+bABzZXRfQ2xvc2VQcmljZV9Jc051bGwAc2V0X0hpZ2hQcmljZV9Jc051bGwAc2V0X09wZW5Qcmlj
+ZV9Jc051bGwAc2V0X0xvd1ByaWNlX0lzTnVsbABzZXRfUHJpY2VEYXRlX0lzTnVsbABzZXRfVm9s
+dW1lRnJvbV9Jc051bGwAc2V0X1ZvbHVtZVRvX0lzTnVsbABzZXRfVGltZXN0YW1wX0lzTnVsbABT
+ZXROdWxsAGdldF9VcGRhdGVkVXJsAEdldFJlc3BvbnNlU3RyZWFtAGdldF9JdGVtAHNldF9JdGVt
+AFN5c3RlbQBnZXRfVGltZUZyb20Ac2V0X1RpbWVGcm9tAGdldF9Wb2x1bWVGcm9tAHNldF9Wb2x1
+bWVGcm9tAHJlc291cmNlTWFuAGdldF9PcGVuAHNldF9PcGVuAFNjcmlwdE1haW4AU3lzdGVtLkNv
+bmZpZ3VyYXRpb24AU3lzdGVtLkdsb2JhbGl6YXRpb24AU3lzdGVtLldlYi5TY3JpcHQuU2VyaWFs
+aXphdGlvbgBTeXN0ZW0uUmVmbGVjdGlvbgBOYW1lVmFsdWVDb2xsZWN0aW9uAFdlYkhlYWRlckNv
+bGxlY3Rpb24ASW52YWxpZE9wZXJhdGlvbkV4Y2VwdGlvbgBnZXRfVGltZVRvAHNldF9UaW1lVG8A
+Z2V0X1ZvbHVtZVRvAHNldF9Wb2x1bWVUbwBDdWx0dXJlSW5mbwBPdXRwdXROYW1lTWFwAE91dHB1
+dE1hcABNaWNyb3NvZnQuU3FsU2VydmVyLkRUU1J1bnRpbWVXcmFwAHNldF9UaW1lc3RhbXAAU3Ry
+ZWFtUmVhZGVyAFRleHRSZWFkZXIAUHJpY2VEYXRhQnVmZmVyAFBpcGVsaW5lQnVmZmVyAFNjcmlw
+dEJ1ZmZlcgBnZXRfUmVzb3VyY2VNYW5hZ2VyAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuRHRzLlJ1bnRp
+bWUuV3JhcHBlcgBKYXZhU2NyaXB0U2VyaWFsaXplcgBHZXRFbnVtZXJhdG9yAC5jdG9yAC5jY3Rv
+cgBPdXRwdXRJRHMAU3lzdGVtLkRpYWdub3N0aWNzAEFkZFNlY29uZHMAU3lzdGVtLlJ1bnRpbWUu
+Q29tcGlsZXJTZXJ2aWNlcwBTeXN0ZW0uUmVzb3VyY2VzAFNDXzJkMTQzOTIzNDIxZTRmYzE5OWMy
+MDYwYjhkMDYyZjdmLlByb3BlcnRpZXMuUmVzb3VyY2VzLnJlc291cmNlcwBEZWJ1Z2dpbmdNb2Rl
+cwBTQ18yZDE0MzkyMzQyMWU0ZmMxOTljMjA2MGI4ZDA2MmY3Zi5Qcm9wZXJ0aWVzAGdldF9SZWFk
+T25seVZhcmlhYmxlcwBCdWZmZXJDb2x1bW5JbmRleGVzAEdldENvbHVtbkluZGV4ZXMAU2V0dGlu
+Z3MAanMAU3lzdGVtLldpbmRvd3MuRm9ybXMAU3lzdGVtLldlYi5FeHRlbnNpb25zAENvbm5lY3Rp
+b25zAGdldF9IZWFkZXJzAEJ1ZmZlcnMARmluaXNoT3V0cHV0cwBDcmVhdGVOZXdPdXRwdXRSb3dz
+AE9iamVjdABTeXN0ZW0uTmV0AFNldEVuZE9mUm93c2V0AGdldF9EZWZhdWx0AERpYWxvZ1Jlc3Vs
+dABVc2VyQ29tcG9uZW50AFBhcmVudENvbXBvbmVudABTY3JpcHRDb21wb25lbnQAZ2V0X0N1cnJl
+bnQATWljcm9zb2Z0LlNxbFNlcnZlci5UeFNjcmlwdABIdHRwV2ViUmVxdWVzdABNaWNyb3NvZnQu
+U3FsU2VydmVyLlBpcGVsaW5lSG9zdABQcmltZU91dHB1dABNb3ZlTmV4dABHZXRWYWx1ZVdpdGhD
+b250ZXh0AFNjcmlwdENvbXBvbmVudEV2YWxDb250ZXh0AGdldF9FdmFsdWF0b3JDb250ZXh0AGdl
+dF9Mb3cAc2V0X0xvdwBBZGRSb3cAU2hvdwBNZXNzYWdlQm94AGdldF9GaXJzdFZhbHVlSW5BcnJh
+eQBzZXRfRmlyc3RWYWx1ZUluQXJyYXkAZ2V0X0Fzc2VtYmx5AAAAAAAHRwBFAFQAABdDAG8AbgB0
+AGUAbgB0AFQAeQBwAGUAACFhAHAAcABsAGkAYwBhAHQAaQBvAG4ALwBqAHMAbwBuAACAm0kAcwBO
+AHUAbABsACAAcAByAG8AcABlAHIAdAB5ACAAYwBhAG4AbgBvAHQAIABiAGUAIABzAGUAdAAgAHQA
+bwAgAEYAYQBsAHMAZQAuACAAQQBzAHMAaQBnAG4AIABhACAAdgBhAGwAdQBlACAAdABvACAAdABo
+AGUAIABjAG8AbAB1AG0AbgAgAGkAbgBzAHQAZQBhAGQALgAAE1AAcgBpAGMAZQBEAGEAdABhAAAd
+QwB1AHIAcgBlAG4AdABTAHQAbwBjAGsASQBkAAAVVQBwAGQAYQB0AGUAZABVAHIAbAAAcVMAQwBf
+ADIAZAAxADQAMwA5ADIAMwA0ADIAMQBlADQAZgBjADEAOQA5AGMAMgAwADYAMABiADgAZAAwADYA
+MgBmADcAZgAuAFAAcgBvAHAAZQByAHQAaQBlAHMALgBSAGUAcwBvAHUAcgBjAGUAcwAAAAA34x2M
+ikumSLfj+XCC2ABoAAQgAQEIAyAAAQUgAQEREQQgAQEOBSABARF1EgcHDg4SHBURQQESIBIgEUUR
+RQYAARKAgQ4FIAASgIkFIAIBDg4FIAASgJEFIAASgJkGIAEBEoCZAyAADgYwAQEeAA4ECgESHAYA
+ARGAqQ4GFRI9ARIgCCAAFRFBARMABhURQQESIAQgABMADSAIAQgICAgICAgRgK0FIAERRQ0EIAAR
+RQMgAAIJIAMBElEdCBJVBSACAQgcAwcBCAYAAggSVQ4FIAEdCAgFIAASgL0GIAESgMEcBQAAEoDF
+BiABHBKAyQgAARKA0RGA1QUgABKA2QcgAgEOEoDZCLd6XFYZNOCJCImEXc2AgMyRCDG/OFatNk41
+AwYSOQMGEhQDBhIYAwYSDAMGEl0CBg4CBggCBgIHBhUSPQESIAIGCgMGEVkDBhJtAwYScQMGEigE
+IAEBCgQgAQECBSABARFFBSABARFZCyAEAQgdCB0SURJVBSABARJdAyAACAggABUSPQESIAkgAQEV
+Ej0BEiADIAAKBCAAEVkEAAASbQQAABJxBQABARJxBAAAEigDAAABAygACgMoAAIDKAAOBCgAEUUE
+KAARWQMoAAgIKAAVEj0BEiAECAASbQQIABJxBAgAEigIAQAIAAAAAAAeAQABAFQCFldyYXBOb25F
+eGNlcHRpb25UaHJvd3MBCAEAAgAAAAAAKAEAI1NDXzJkMTQzOTIzNDIxZTRmYzE5OWMyMDYwYjhk
+MDYyZjdmAAAFAQAAAAAWAQARQ29weXJpZ2h0IEAgIDIwMTcAAEkBABouTkVURnJhbWV3b3JrLFZl
+cnNpb249djQuNQEAVA4URnJhbWV3b3JrRGlzcGxheU5hbWUSLk5FVCBGcmFtZXdvcmsgNC41BAEA
+AAAAALQAAADOyu++AQAAAJEAAABsU3lzdGVtLlJlc291cmNlcy5SZXNvdXJjZVJlYWRlciwgbXNj
+b3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1i
+NzdhNWM1NjE5MzRlMDg5I1N5c3RlbS5SZXNvdXJjZXMuUnVudGltZVJlc291cmNlU2V0AgAAAAAA
+AAAAAAAAUEFEUEFEULQAAAAURgAAAAAAAAAAAAAuRgAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+IEYAAAAAAAAAAAAAAABfQ29yRGxsTWFpbgBtc2NvcmVlLmRsbAAAAAAA/yUAIAAQAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -1698,7 +1712,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAwAAAAMNgAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAwAAABANgAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -1708,1167 +1722,476 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
-                  </arrayElements>
-                </property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the Microsoft Visual Studio Tools for Applications project. Project names must be unique within a package."
-                  name="VSTAProjectName"
-                  typeConverter="NOTBROWSABLE">SC_2d143923421e4fc199c2060b8d062f7f</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the programming language used by the script."
-                  name="ScriptLanguage"
-                  typeConverter="Microsoft.SqlServer.VSTAHosting.ScriptingLanguages">CSharp</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies a comma-separated list of read-only variables."
-                  name="ReadOnlyVariables"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIVariablePickerDlg">$Package::CryptoId,$Package::Url</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies a comma-separated list of read/write variables."
-                  name="ReadWriteVariables"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIWriteableVariablePickerDlg"></property>
-                <property
-                  dataType="System.String"
-                  description="List of breakpoints present on the script."
-                  isArray="true"
-                  name="BreakpointCollection"
-                  typeConverter="NOTBROWSABLE">
-                  <arrayElements
-                    arrayElementCount="0" />
-                </property>
-                <property
-                  dataType="System.String"
-                  name="UserComponentTypeName">Microsoft.ScriptComponentHost</property>
-                <property
-                  dataType="System.String"
-                  description="Checksum to match component metedata against compiled codes."
-                  name="MetadataChecksum140"
-                  typeConverter="NOTBROWSABLE">F7</property>
-              </properties>
-              <outputs>
-                <output
-                  refId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData]"
-                  hasSideEffects="true"
-                  name="PriceData">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[Timestamp]"
-                      dataType="i8"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[Timestamp]"
-                      name="Timestamp" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[CryptoId]"
-                      codePage="1252"
-                      dataType="str"
-                      length="10"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[CryptoId]"
-                      name="CryptoId" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[PriceDate]"
-                      dataType="dbTimeStamp"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[PriceDate]"
-                      name="PriceDate" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[ClosePrice]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[ClosePrice]"
-                      name="ClosePrice" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[HighPrice]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[HighPrice]"
-                      name="HighPrice" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[LowPrice]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[LowPrice]"
-                      name="LowPrice" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeFrom]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeFrom]"
-                      name="VolumeFrom" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeTo]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeTo]"
-                      name="VolumeTo" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[OpenPrice]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[OpenPrice]"
-                      name="OpenPrice" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\Import Crypto Data\Conditional Split"
-              componentClassID="Microsoft.ConditionalSplit"
-              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
-              name="Conditional Split"
-              usesDispositions="true">
-              <inputs>
-                <input
-                  refId="Package\Import Crypto Data\Conditional Split.Inputs[Conditional Split Input]"
-                  description="Input to the Conditional Split Transformation"
-                  name="Conditional Split Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Conditional Split.Inputs[Conditional Split Input].Columns[ExistingCryptoId]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="10"
-                      cachedName="ExistingCryptoId"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[ExistingCryptoId]" />
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\Import Crypto Data\Conditional Split.Outputs[NoMatch]"
-                  description="Output 1 of the Conditional Split Transformation"
-                  errorOrTruncationOperation="Computation"
-                  errorRowDisposition="FailComponent"
-                  exclusionGroup="1"
-                  name="NoMatch"
-                  synchronousInputId="Package\Import Crypto Data\Conditional Split.Inputs[Conditional Split Input]"
-                  truncationRowDisposition="FailComponent">
+                      </arrayElements>
+                    </property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the Microsoft Visual Studio Tools for Applications project. Project names must be unique within a package."
+                      name="VSTAProjectName"
+                      typeConverter="NOTBROWSABLE">SC_2d143923421e4fc199c2060b8d062f7f</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the programming language used by the script."
+                      name="ScriptLanguage"
+                      typeConverter="Microsoft.SqlServer.VSTAHosting.ScriptingLanguages">CSharp</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a comma-separated list of read-only variables."
+                      name="ReadOnlyVariables"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIVariablePickerDlg">User::CurrentStockId,User::UpdatedUrl</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a comma-separated list of read/write variables."
+                      name="ReadWriteVariables"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIWriteableVariablePickerDlg"></property>
+                    <property
+                      dataType="System.String"
+                      description="List of breakpoints present on the script."
+                      isArray="true"
+                      name="BreakpointCollection"
+                      typeConverter="NOTBROWSABLE">
+                      <arrayElements
+                        arrayElementCount="0" />
+                    </property>
+                    <property
+                      dataType="System.String"
+                      name="UserComponentTypeName">Microsoft.ScriptComponentHost</property>
+                    <property
+                      dataType="System.String"
+                      description="Checksum to match component metedata against compiled codes."
+                      name="MetadataChecksum140"
+                      typeConverter="NOTBROWSABLE">45</property>
+                  </properties>
+                  <outputs>
+                    <output
+                      refId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData]"
+                      hasSideEffects="true"
+                      name="PriceData">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[Timestamp]"
+                          dataType="i8"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[Timestamp]"
+                          name="Timestamp" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[StockId]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[StockId]"
+                          name="StockId" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[PriceDate]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[PriceDate]"
+                          name="PriceDate" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[ClosePrice]"
+                          dataType="decimal"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[ClosePrice]"
+                          name="ClosePrice" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[HighPrice]"
+                          dataType="decimal"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[HighPrice]"
+                          name="HighPrice" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[LowPrice]"
+                          dataType="decimal"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[LowPrice]"
+                          name="LowPrice" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeFrom]"
+                          dataType="decimal"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeFrom]"
+                          name="VolumeFrom" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeTo]"
+                          dataType="decimal"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeTo]"
+                          name="VolumeTo" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[OpenPrice]"
+                          dataType="decimal"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[OpenPrice]"
+                          name="OpenPrice" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Foreach Loop Container\Download Stock Data\Row Count"
+                  componentClassID="Microsoft.RowCount"
+                  contactInfo="Row Count;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Counts rows as they pass through a data flow. For example, use the number of rows processed to determine whether or not to perform cleanup operations, or update text in an e-mail message to communicate processing status."
+                  name="Row Count">
                   <properties>
                     <property
-                      containsID="true"
                       dataType="System.String"
-                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[ExistingCryptoId]}) ==  TRUE </property>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the friendly version of the expression. This expression version uses column names."
-                      expressionType="Notify"
-                      name="FriendlyExpression">ISNULL(ExistingCryptoId) ==  TRUE </property>
+                      description="Specifies the variable to hold the row count."
+                      name="VariableName">User::RecordCount</property>
+                  </properties>
+                  <inputs>
+                    <input
+                      refId="Package\Foreach Loop Container\Download Stock Data\Row Count.Inputs[Row Count Input 1]"
+                      hasSideEffects="true"
+                      name="Row Count Input 1">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Foreach Loop Container\Download Stock Data\Row Count.Outputs[Row Count Output 1]"
+                      name="Row Count Output 1"
+                      synchronousInputId="Package\Foreach Loop Container\Download Stock Data\Row Count.Inputs[Row Count Input 1]">
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Foreach Loop Container\Download Stock Data\Staging Table"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="Staging Table"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
                     <property
                       dataType="System.Int32"
-                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
-                      name="EvaluationOrder">0</property>
-                  </properties>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\Import Crypto Data\Conditional Split.Outputs[Conditional Split Default Output]"
-                  description="Default Output of the Conditional Split Transformation"
-                  exclusionGroup="1"
-                  name="Conditional Split Default Output"
-                  synchronousInputId="Package\Import Crypto Data\Conditional Split.Inputs[Conditional Split Input]">
-                  <properties>
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[Stock].[stgPriceByMinute]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
                     <property
                       dataType="System.Boolean"
-                      name="IsDefaultOut">true</property>
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
                   </properties>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\Import Crypto Data\Conditional Split.Outputs[Conditional Split Error Output]"
-                  description="Error Output of the Conditional Split Transformation"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Conditional Split Error Output"
-                  synchronousInputId="Package\Import Crypto Data\Conditional Split.Inputs[Conditional Split Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\Import Crypto Data\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\Import Crypto Data\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\Import Crypto Data\Crypto History"
-              componentClassID="Microsoft.OLEDBSource"
-              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
-              description="OLE DB Source"
-              name="Crypto History"
-              usesDispositions="true"
-              version="7">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset"></property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable that contains the name of the database object used to open a rowset."
-                  name="OpenRowsetVariable"></property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CryptoId, [Timestamp]
-FROM [dbo].[PriceHistoryByMinute]
-ORDER BY CryptoId, [Timestamp]</property>
-                <property
-                  dataType="System.String"
-                  description="The variable that contains the SQL command to be executed."
-                  name="SqlCommandVariable"></property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Forces the use of the DefaultCodePage property value when describing character data."
-                  name="AlwaysUseDefaultCodePage">false</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the mode used to access the database."
-                  name="AccessMode"
-                  typeConverter="AccessMode">2</property>
-                <property
-                  dataType="System.String"
-                  description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\Import Crypto Data\Crypto History.Connections[OleDbConnection]"
-                  connectionManagerID="{ED1CF566-984A-4B46-93B4-4F484C7C9882}:invalid"
-                  connectionManagerRefId="{ED1CF566-984A-4B46-93B4-4F484C7C9882}:invalid"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <outputs>
-                <output
-                  refId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Output]"
-                  isSorted="true"
-                  name="OLE DB Source Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Output].Columns[Timestamp]"
-                      dataType="i8"
-                      errorOrTruncationOperation="Conversion"
+                  <connections>
+                    <connection
+                      refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Connections[OleDbConnection]"
+                      connectionManagerID="{42F6D32A-F7BB-471D-AD95-CFAF6D29C0BE}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[Trading]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Output].ExternalColumns[Timestamp]"
-                      lineageId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Output].Columns[Timestamp]"
-                      name="Timestamp"
-                      sortKeyPosition="2"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Output].Columns[CryptoId]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Output].ExternalColumns[CryptoId]"
-                      length="10"
-                      lineageId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Output].Columns[CryptoId]"
-                      name="CryptoId"
-                      sortKeyPosition="1"
-                      truncationRowDisposition="FailComponent" />
-                  </outputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Output].ExternalColumns[Timestamp]"
-                      dataType="i8"
-                      name="Timestamp" />
-                    <externalMetadataColumn
-                      refId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Output].ExternalColumns[CryptoId]"
-                      codePage="1252"
-                      dataType="str"
-                      length="10"
-                      name="CryptoId" />
-                  </externalMetadataColumns>
-                </output>
-                <output
-                  refId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Error Output]"
-                  isErrorOut="true"
-                  name="OLE DB Source Error Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Error Output].Columns[Timestamp]"
-                      dataType="i8"
-                      lineageId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Error Output].Columns[Timestamp]"
-                      name="Timestamp" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Error Output].Columns[CryptoId]"
-                      codePage="1252"
-                      dataType="str"
-                      length="10"
-                      lineageId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Error Output].Columns[CryptoId]"
-                      name="CryptoId" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\Import Crypto Data\Merge Join"
-              componentClassID="Microsoft.MergeJoin"
-              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
-              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
-              name="Merge Join"
-              version="1">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the type of join to perform."
-                  name="JoinType"
-                  typeConverter="JoinType">1</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the number of columns in the ordering key."
-                  name="NumKeyColumns">2</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the null values are treated as equal values."
-                  name="TreatNullsAsEqual">true</property>
-                <property
-                  dataType="System.Int32"
-                  description="Indicates the requested maximum buffers per input before blocking."
-                  name="MaxBuffersPerInput">5</property>
-              </properties>
-              <inputs>
-                <input
-                  refId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input]"
-                  hasSideEffects="true"
-                  name="Merge Join Left Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[Timestamp]"
-                      cachedDataType="i8"
-                      cachedName="Timestamp"
-                      cachedSortKeyPosition="2"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[Timestamp]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[CryptoId]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="10"
-                      cachedName="CryptoId"
-                      cachedSortKeyPosition="1"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[CryptoId]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[PriceDate]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="PriceDate"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[PriceDate]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[ClosePrice]"
-                      cachedDataType="decimal"
-                      cachedName="ClosePrice"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[ClosePrice]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[HighPrice]"
-                      cachedDataType="decimal"
-                      cachedName="HighPrice"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[HighPrice]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[LowPrice]"
-                      cachedDataType="decimal"
-                      cachedName="LowPrice"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[LowPrice]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[VolumeFrom]"
-                      cachedDataType="decimal"
-                      cachedName="VolumeFrom"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[VolumeFrom]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[VolumeTo]"
-                      cachedDataType="decimal"
-                      cachedName="VolumeTo"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[VolumeTo]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[OpenPrice]"
-                      cachedDataType="decimal"
-                      cachedName="OpenPrice"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[OpenPrice]" />
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-                <input
-                  refId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Right Input]"
-                  hasSideEffects="true"
-                  name="Merge Join Right Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Right Input].Columns[Timestamp]"
-                      cachedDataType="i8"
-                      cachedName="Timestamp"
-                      cachedSortKeyPosition="2"
-                      lineageId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Output].Columns[Timestamp]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Right Input].Columns[CryptoId]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="10"
-                      cachedName="CryptoId"
-                      cachedSortKeyPosition="1"
-                      lineageId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Output].Columns[CryptoId]" />
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output]"
-                  isSorted="true"
-                  name="Merge Join Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[Timestamp]"
-                      dataType="i8"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[Timestamp]"
-                      name="Timestamp"
-                      sortKeyPosition="2">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[Timestamp]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[CryptoId]"
-                      codePage="1252"
-                      dataType="str"
-                      length="10"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[CryptoId]"
-                      name="CryptoId"
-                      sortKeyPosition="1">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[CryptoId]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[PriceDate]"
-                      dataType="dbTimeStamp"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[PriceDate]"
-                      name="PriceDate">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[PriceDate]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[ClosePrice]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[ClosePrice]"
-                      name="ClosePrice">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[ClosePrice]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[HighPrice]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[HighPrice]"
-                      name="HighPrice">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[HighPrice]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[LowPrice]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[LowPrice]"
-                      name="LowPrice">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[LowPrice]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[VolumeFrom]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[VolumeFrom]"
-                      name="VolumeFrom">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[VolumeFrom]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[VolumeTo]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[VolumeTo]"
-                      name="VolumeTo">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[VolumeTo]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[OpenPrice]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[OpenPrice]"
-                      name="OpenPrice">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input].Columns[OpenPrice]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[ExistingCryptoId]"
-                      codePage="1252"
-                      dataType="str"
-                      length="10"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[ExistingCryptoId]"
-                      name="ExistingCryptoId">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\Import Crypto Data\Merge Join.Inputs[Merge Join Right Input].Columns[CryptoId]}</property>
-                      </properties>
-                    </outputColumn>
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\Import Crypto Data\Row Count"
-              componentClassID="Microsoft.RowCount"
-              contactInfo="Row Count;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Counts rows as they pass through a data flow. For example, use the number of rows processed to determine whether or not to perform cleanup operations, or update text in an e-mail message to communicate processing status."
-              name="Row Count">
-              <properties>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable to hold the row count."
-                  name="VariableName">User::RecordCount</property>
-              </properties>
-              <inputs>
-                <input
-                  refId="Package\Import Crypto Data\Row Count.Inputs[Row Count Input 1]"
-                  hasSideEffects="true"
-                  name="Row Count Input 1">
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\Import Crypto Data\Row Count.Outputs[Row Count Output 1]"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].Columns[Timestamp]"
+                          cachedDataType="i8"
+                          cachedName="Timestamp"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[Timestamp]"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[Timestamp]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].Columns[PriceDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="PriceDate"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[PriceDate]"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[PriceDate]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].Columns[ClosePrice]"
+                          cachedDataType="decimal"
+                          cachedName="ClosePrice"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[ClosePrice]"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[ClosePrice]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].Columns[HighPrice]"
+                          cachedDataType="decimal"
+                          cachedName="HighPrice"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[HighPrice]"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[HighPrice]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].Columns[LowPrice]"
+                          cachedDataType="decimal"
+                          cachedName="LowPrice"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[LowPrice]"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[LowPrice]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].Columns[VolumeFrom]"
+                          cachedDataType="decimal"
+                          cachedName="VolumeFrom"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[VolumeFrom]"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeFrom]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].Columns[VolumeTo]"
+                          cachedDataType="decimal"
+                          cachedName="VolumeTo"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[VolumeTo]"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeTo]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].Columns[OpenPrice]"
+                          cachedDataType="decimal"
+                          cachedName="OpenPrice"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[OpenPrice]"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[OpenPrice]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].Columns[StockId]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="StockId"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[StockId]"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData].Columns[StockId]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[Timestamp]"
+                          dataType="i8"
+                          name="Timestamp" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[PriceDate]"
+                          dataType="dbTimeStamp"
+                          name="PriceDate" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[ClosePrice]"
+                          dataType="numeric"
+                          name="ClosePrice"
+                          precision="12"
+                          scale="4" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[HighPrice]"
+                          dataType="numeric"
+                          name="HighPrice"
+                          precision="12"
+                          scale="4" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[LowPrice]"
+                          dataType="numeric"
+                          name="LowPrice"
+                          precision="12"
+                          scale="4" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[OpenPrice]"
+                          dataType="numeric"
+                          name="OpenPrice"
+                          precision="12"
+                          scale="4" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[VolumeFrom]"
+                          dataType="numeric"
+                          name="VolumeFrom"
+                          precision="30"
+                          scale="15" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[VolumeTo]"
+                          dataType="numeric"
+                          name="VolumeTo"
+                          precision="30"
+                          scale="15" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[DateInserted]"
+                          dataType="dbTimeStamp"
+                          name="DateInserted" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[StockId]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="StockId" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Foreach Loop Container\Download Stock Data.Paths[PriceData]"
+                  endId="Package\Foreach Loop Container\Download Stock Data\Row Count.Inputs[Row Count Input 1]"
+                  name="PriceData"
+                  startId="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API.Outputs[PriceData]" />
+                <path
+                  refId="Package\Foreach Loop Container\Download Stock Data.Paths[Row Count Output 1]"
+                  endId="Package\Foreach Loop Container\Download Stock Data\Staging Table.Inputs[OLE DB Destination Input]"
                   name="Row Count Output 1"
-                  synchronousInputId="Package\Import Crypto Data\Row Count.Inputs[Row Count Input 1]">
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\Import Crypto Data\Sort"
-              componentClassID="Microsoft.Sort"
-              contactInfo="Sort;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
-              description="Sorts input data in ascending or descending order when it cannot be sorted at its source. For example, sort sales data by 'customer id' before it is written to a flat file and delivered to another department. Note: We do not recommend this transformation for large data flows."
-              name="Sort"
-              version="1">
-              <properties>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the Sort transformation removes rows with duplicate sort values."
-                  name="EliminateDuplicates">false</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the maximum number of threads to use for sorting."
-                  expressionType="Notify"
-                  name="MaximumThreads">-1</property>
-              </properties>
-              <inputs>
-                <input
-                  refId="Package\Import Crypto Data\Sort.Inputs[Sort Input]"
-                  name="Sort Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Sort.Inputs[Sort Input].Columns[Timestamp]"
-                      cachedDataType="i8"
-                      cachedName="Timestamp"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[Timestamp]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">2</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Sort.Inputs[Sort Input].Columns[CryptoId]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="10"
-                      cachedName="CryptoId"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[CryptoId]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">1</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Sort.Inputs[Sort Input].Columns[PriceDate]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="PriceDate"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[PriceDate]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Sort.Inputs[Sort Input].Columns[ClosePrice]"
-                      cachedDataType="decimal"
-                      cachedName="ClosePrice"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[ClosePrice]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Sort.Inputs[Sort Input].Columns[HighPrice]"
-                      cachedDataType="decimal"
-                      cachedName="HighPrice"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[HighPrice]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Sort.Inputs[Sort Input].Columns[LowPrice]"
-                      cachedDataType="decimal"
-                      cachedName="LowPrice"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[LowPrice]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Sort.Inputs[Sort Input].Columns[VolumeFrom]"
-                      cachedDataType="decimal"
-                      cachedName="VolumeFrom"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeFrom]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Sort.Inputs[Sort Input].Columns[VolumeTo]"
-                      cachedDataType="decimal"
-                      cachedName="VolumeTo"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeTo]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Sort.Inputs[Sort Input].Columns[OpenPrice]"
-                      cachedDataType="decimal"
-                      cachedName="OpenPrice"
-                      lineageId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[OpenPrice]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\Import Crypto Data\Sort.Outputs[Sort Output]"
-                  isSorted="true"
-                  name="Sort Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[Timestamp]"
-                      dataType="i8"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[Timestamp]"
-                      name="Timestamp"
-                      sortKeyPosition="2">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[Timestamp]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[CryptoId]"
-                      codePage="1252"
-                      dataType="str"
-                      length="10"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[CryptoId]"
-                      name="CryptoId"
-                      sortKeyPosition="1">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[CryptoId]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[PriceDate]"
-                      dataType="dbTimeStamp"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[PriceDate]"
-                      name="PriceDate">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[PriceDate]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[ClosePrice]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[ClosePrice]"
-                      name="ClosePrice">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[ClosePrice]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[HighPrice]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[HighPrice]"
-                      name="HighPrice">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[HighPrice]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[LowPrice]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[LowPrice]"
-                      name="LowPrice">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[LowPrice]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[VolumeFrom]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[VolumeFrom]"
-                      name="VolumeFrom">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeFrom]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[VolumeTo]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[VolumeTo]"
-                      name="VolumeTo">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[VolumeTo]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[OpenPrice]"
-                      dataType="decimal"
-                      lineageId="Package\Import Crypto Data\Sort.Outputs[Sort Output].Columns[OpenPrice]"
-                      name="OpenPrice">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData].Columns[OpenPrice]}</property>
-                      </properties>
-                    </outputColumn>
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\Import Crypto Data\Trading"
-              componentClassID="Microsoft.OLEDBDestination"
-              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
-              description="OLE DB Destination"
-              name="Trading"
-              usesDispositions="true"
-              version="4">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[PriceHistoryByMinute]</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable that contains the name of the database object used to open a rowset."
-                  name="OpenRowsetVariable"></property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Forces the use of the DefaultCodePage property value when describing character data."
-                  name="AlwaysUseDefaultCodePage">false</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the mode used to access the database."
-                  name="AccessMode"
-                  typeConverter="AccessMode">3</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
-                  name="FastLoadKeepIdentity">false</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
-                  name="FastLoadKeepNulls">false</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
-                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
-                  name="FastLoadMaxInsertCommitSize">2147483647</property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\Import Crypto Data\Trading.Connections[OleDbConnection]"
-                  connectionManagerID="{ED1CF566-984A-4B46-93B4-4F484C7C9882}:invalid"
-                  connectionManagerRefId="{ED1CF566-984A-4B46-93B4-4F484C7C9882}:invalid"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <inputs>
-                <input
-                  refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input]"
-                  errorOrTruncationOperation="Insert"
-                  errorRowDisposition="FailComponent"
-                  hasSideEffects="true"
-                  name="OLE DB Destination Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].Columns[Timestamp]"
-                      cachedDataType="i8"
-                      cachedName="Timestamp"
-                      cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[Timestamp]"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[Timestamp]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].Columns[CryptoId]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="10"
-                      cachedName="CryptoId"
-                      cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[CryptoId]"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[CryptoId]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].Columns[PriceDate]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="PriceDate"
-                      externalMetadataColumnId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[PriceDate]"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[PriceDate]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].Columns[ClosePrice]"
-                      cachedDataType="decimal"
-                      cachedName="ClosePrice"
-                      externalMetadataColumnId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[ClosePrice]"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[ClosePrice]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].Columns[HighPrice]"
-                      cachedDataType="decimal"
-                      cachedName="HighPrice"
-                      externalMetadataColumnId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[HighPrice]"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[HighPrice]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].Columns[LowPrice]"
-                      cachedDataType="decimal"
-                      cachedName="LowPrice"
-                      externalMetadataColumnId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[LowPrice]"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[LowPrice]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].Columns[VolumeFrom]"
-                      cachedDataType="decimal"
-                      cachedName="VolumeFrom"
-                      externalMetadataColumnId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[VolumeFrom]"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[VolumeFrom]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].Columns[VolumeTo]"
-                      cachedDataType="decimal"
-                      cachedName="VolumeTo"
-                      externalMetadataColumnId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[VolumeTo]"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[VolumeTo]" />
-                    <inputColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].Columns[OpenPrice]"
-                      cachedDataType="decimal"
-                      cachedName="OpenPrice"
-                      externalMetadataColumnId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[OpenPrice]"
-                      lineageId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output].Columns[OpenPrice]" />
-                  </inputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[Timestamp]"
-                      dataType="i8"
-                      name="Timestamp" />
-                    <externalMetadataColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[CryptoId]"
-                      codePage="1252"
-                      dataType="str"
-                      length="10"
-                      name="CryptoId" />
-                    <externalMetadataColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[PriceDate]"
-                      dataType="dbTimeStamp"
-                      name="PriceDate" />
-                    <externalMetadataColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[ClosePrice]"
-                      dataType="numeric"
-                      name="ClosePrice"
-                      precision="12"
-                      scale="4" />
-                    <externalMetadataColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[HighPrice]"
-                      dataType="numeric"
-                      name="HighPrice"
-                      precision="12"
-                      scale="4" />
-                    <externalMetadataColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[LowPrice]"
-                      dataType="numeric"
-                      name="LowPrice"
-                      precision="12"
-                      scale="4" />
-                    <externalMetadataColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[OpenPrice]"
-                      dataType="numeric"
-                      name="OpenPrice"
-                      precision="12"
-                      scale="4" />
-                    <externalMetadataColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[VolumeFrom]"
-                      dataType="numeric"
-                      name="VolumeFrom"
-                      precision="30"
-                      scale="15" />
-                    <externalMetadataColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[VolumeTo]"
-                      dataType="numeric"
-                      name="VolumeTo"
-                      precision="30"
-                      scale="15" />
-                    <externalMetadataColumn
-                      refId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input].ExternalColumns[DateInserted]"
-                      dataType="dbTimeStamp"
-                      name="DateInserted" />
-                  </externalMetadataColumns>
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\Import Crypto Data\Trading.Outputs[OLE DB Destination Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Trading.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\Import Crypto Data\Trading.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\Import Crypto Data\Trading.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\Import Crypto Data\Trading.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-          </components>
-          <paths>
-            <path
-              refId="Package\Import Crypto Data.Paths[Merge Join Output]"
-              endId="Package\Import Crypto Data\Conditional Split.Inputs[Conditional Split Input]"
-              name="Merge Join Output"
-              startId="Package\Import Crypto Data\Merge Join.Outputs[Merge Join Output]" />
-            <path
-              refId="Package\Import Crypto Data.Paths[NoMatch]"
-              endId="Package\Import Crypto Data\Row Count.Inputs[Row Count Input 1]"
-              name="NoMatch"
-              startId="Package\Import Crypto Data\Conditional Split.Outputs[NoMatch]" />
-            <path
-              refId="Package\Import Crypto Data.Paths[OLE DB Source Output]"
-              endId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Right Input]"
-              name="OLE DB Source Output"
-              startId="Package\Import Crypto Data\Crypto History.Outputs[OLE DB Source Output]" />
-            <path
-              refId="Package\Import Crypto Data.Paths[PriceData]"
-              endId="Package\Import Crypto Data\Sort.Inputs[Sort Input]"
-              name="PriceData"
-              startId="Package\Import Crypto Data\Call CryptoCompare API.Outputs[PriceData]" />
-            <path
-              refId="Package\Import Crypto Data.Paths[Row Count Output 1]"
-              endId="Package\Import Crypto Data\Trading.Inputs[OLE DB Destination Input]"
-              name="Row Count Output 1"
-              startId="Package\Import Crypto Data\Row Count.Outputs[Row Count Output 1]" />
-            <path
-              refId="Package\Import Crypto Data.Paths[Sort Output]"
-              endId="Package\Import Crypto Data\Merge Join.Inputs[Merge Join Left Input]"
-              name="Sort Output"
-              startId="Package\Import Crypto Data\Sort.Outputs[Sort Output]" />
-          </paths>
-        </pipeline>
+                  startId="Package\Foreach Loop Container\Download Stock Data\Row Count.Outputs[Row Count Output 1]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Loop Container\Update URL with Stock Id"
+          DTS:CreationName="Microsoft.ExpressionTask"
+          DTS:Description="Expression Task"
+          DTS:DTSID="{997B2025-E654-4C84-91CE-563800613CE1}"
+          DTS:ExecutableType="Microsoft.ExpressionTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Update URL with Stock Id"
+          DTS:TaskContact="Expression Task;Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <ExpressionTask
+              Expression="@[User::UpdatedUrl] = REPLACE(@[User::HistoryByMinuteURL], &quot;[FROMSTOCKID]&quot;, @[User::CurrentStockId])" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Foreach Loop Container.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{CAE149DE-873E-4070-9641-FADFD00F6D41}"
+          DTS:From="Package\Foreach Loop Container\Update URL with Stock Id"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Foreach Loop Container\Download Stock Data" />
+      </DTS:PrecedenceConstraints>
+      <DTS:ForEachVariableMappings>
+        <DTS:ForEachVariableMapping
+          DTS:CreationName=""
+          DTS:DTSID="{A05ED5C3-1CA7-48E0-A4CC-3DEACD42B94F}"
+          DTS:ObjectName="{A05ED5C3-1CA7-48E0-A4CC-3DEACD42B94F}"
+          DTS:ValueIndex="0"
+          DTS:VariableName="User::CurrentStockId" />
+      </DTS:ForEachVariableMappings>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Get Stock List"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{425f684c-76d5-48aa-9cd6-ea0d4614e3aa}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get Stock List"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{42F6D32A-F7BB-471D-AD95-CFAF6D29C0BE}"
+          SQLTask:SqlStatementSource="SELECT StockId&#xA;FROM [Lookup].[Stock]&#xA;WHERE [Enabled] = 1"
+          SQLTask:ResultType="ResultSetType_Rowset" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::Stocks" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Get URL"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{CCF71588-0B73-405F-A9B1-A7A60FA1DB59}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get URL"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{42F6D32A-F7BB-471D-AD95-CFAF6D29C0BE}"
+          SQLTask:SqlStatementSource="EXEC [Config].[GetApiUrlByMethod] 'HistoryByMinute', ? OUTPUT" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::HistoryByMinuteURL"
+            SQLTask:ParameterDirection="Output"
+            SQLTask:DataType="129"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Import Stock Data"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{ca521b83-1eef-4de9-8041-7bb040df2e25}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Import Stock Data"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{42F6D32A-F7BB-471D-AD95-CFAF6D29C0BE}"
+          SQLTask:SqlStatementSource="EXEC Stock.ImportPriceByMinute" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Truncate Staging Table and Diable Index"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{27C999DB-5DE4-4935-825B-514C9F30E076}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate Staging Table and Diable Index"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{42F6D32A-F7BB-471D-AD95-CFAF6D29C0BE}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE Stock.stgPriceByMinute&#xA;GO&#xA;&#xA;IF EXISTS (&#xA;&#x9;&#x9;SELECT 1&#xA;        FROM sys.indexes&#xA;        WHERE [name] = 'IX_stgPriceByMinute_StockId_Timestamp'&#xA;&#x9;)&#xA;DROP INDEX IX_stgPriceByMinute_StockId_Timestamp ON Stock.stgPriceByMinute&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
@@ -2876,11 +2199,43 @@ ORDER BY CryptoId, [Timestamp]</property>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{24416ccf-68bd-4ea7-902f-179f3dbf9cf2}"
+      DTS:DTSID="{759C5AA3-FE0F-4DAB-9D75-DA1ED5994AA5}"
       DTS:From="Package\Get Stock List"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
+      DTS:To="Package\Truncate Staging Table and Diable Index" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{4815D321-E927-4B93-84FA-66A9C933F271}"
+      DTS:From="Package\Get URL"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Get Stock List" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{53154085-9B7B-4412-AB81-37C2BABC7E86}"
+      DTS:From="Package\Truncate Staging Table and Diable Index"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
       DTS:To="Package\Foreach Loop Container" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{D89F3E47-E409-4383-A09A-D2AB3E18C2D1}"
+      DTS:From="Package\Foreach Loop Container"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Create Index" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{E673C4EA-8372-4F0B-9FE2-959B55A5BB46}"
+      DTS:From="Package\Create Index"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Import Stock Data" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -2893,36 +2248,166 @@ ORDER BY CryptoId, [Timestamp]</property>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="170,42"
-          Id="Package\Import Crypto Data"
-          TopLeft="356.66666234533,163.033330334624" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="205.333333333334,142"
-          Size="205.333333333334,184.666666666667"
-          Id="Package\Foreach Loop Container"
-          TopLeft="586.66666234533,273.966661684315" />
+          Size="180,42.6666666666667"
+          Id="Package\Foreach Loop Container\Download Stock Data"
+          TopLeft="37.3333283662797,121.633328118523" />
         <NodeLayout
-          Size="144,42.6666666666667"
-          Id="Package\Get Stock List"
-          TopLeft="618.749995200585,163.033330334624" />
+          Size="200.666666666667,42.6666666666667"
+          Id="Package\Foreach Loop Container\Update URL with Stock Id"
+          TopLeft="27.3333272238573,29.4333285989365" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="690.041662106291,205.699997001291">
+          Id="Package\Foreach Loop Container.PrecedenceConstraints[Constraint]"
+          TopLeft="127.499994461735,72.0999952656032">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,68.2666646830243"
+              EndConnector="0,49.5333328529202"
               Start="0,0"
-              End="0,60.7666646830243">
+              End="0,42.0333328529202">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,60.7666646830243" />
+                    End="0,42.0333328529202" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="238.666666666667,218.666666666667"
+          Size="238.666666666667,261.333333333334"
+          Id="Package\Foreach Loop Container"
+          TopLeft="382.916665381442,238.799996218682" />
+        <NodeLayout
+          Size="144,42.6666666666667"
+          Id="Package\Get Stock List"
+          TopLeft="432.999998236697,87.8666648689909" />
+        <NodeLayout
+          Size="118.666666666667,42.6666666666667"
+          Id="Package\Get URL"
+          TopLeft="441.749993685633,1.09999983727931" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="503.041662627831,43.766666503946">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,44.0999983650449"
+              Start="0,0"
+              End="0,36.5999983650449">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,36.5999983650449" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="272,42.6666666666667"
+          Id="Package\Truncate Staging Table and Diable Index"
+          TopLeft="365.666662171483,163.299997807145" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="503.33333020409,130.533331535658">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,32.7666662714876"
+              Start="0,0"
+              End="0,25.2666662714876">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.2666662714876" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="501.958330443129,205.966664473812">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,32.8333317448701"
+              Start="0,0"
+              End="0,25.3333317448701">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.3333317448701" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="140,42.6666666666667"
+          Id="Package\Create Index"
+          TopLeft="430.104161251026,533.208324180295" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="501.1770799829,500.133329552015">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33.07499462828"
+              Start="0,0"
+              End="0,25.57499462828">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.57499462828" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="165.333333333334,42.6666666666667"
+          Id="Package\Import Stock Data"
+          TopLeft="418.708327481523,613.374996542186" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="500.739577699608,575.874990846962">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,37.5000056952238"
+              Start="0,0"
+              End="0,30.0000056952238">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,30.0000056952238" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2935,187 +2420,71 @@ ORDER BY CryptoId, [Timestamp]</property>
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\Import Crypto Data">
+    design-time-name="Package\Foreach Loop Container\Download Stock Data">
     <LayoutInfo>
       <GraphLayout
-        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="98,42"
-          Id="Package\Import Crypto Data\Sort"
-          TopLeft="159.583330955356,144.299998194575" />
+          Size="144,42.6666666666667"
+          Id="Package\Foreach Loop Container\Download Stock Data\Staging Table"
+          TopLeft="330.999994561076,417.166659576694" />
         <NodeLayout
-          Size="115.333333333334,42"
-          Id="Package\Import Crypto Data\Trading"
-          TopLeft="344.999994561076,417.166659576694" />
-        <NodeLayout
-          Size="130.666666666667,42"
-          Id="Package\Import Crypto Data\Row Count"
+          Size="131.333333333334,42.6666666666667"
+          Id="Package\Foreach Loop Container\Download Stock Data\Row Count"
           TopLeft="336.666661649943,333.533327738841" />
         <NodeLayout
-          Size="155.333333333334,42"
-          Id="Package\Import Crypto Data\Conditional Split"
-          TopLeft="319.583328571171,244.833329730233" />
-        <NodeLayout
-          Size="130.666666666667,42"
-          Id="Package\Import Crypto Data\Merge Join"
-          TopLeft="330.416661743075,146.033331496914" />
-        <NodeLayout
           Size="191.333333333334,42"
-          Id="Package\Import Crypto Data\Call CryptoCompare API"
-          TopLeft="114.583331625909,61.9666655586161" />
-        <NodeLayout
-          Size="146,42"
-          Id="Package\Import Crypto Data\Crypto History"
-          TopLeft="535.833325348795,149.066664001147" />
+          Id="Package\Foreach Loop Container\Download Stock Data\Call CryptoCompare API"
+          TopLeft="309.833328925074,242.999996048212" />
         <EdgeLayout
-          Id="Package\Import Crypto Data.Paths[OLE DB Source Output]"
-          TopLeft="535.833325348795,168.549997749031">
+          Id="Package\Foreach Loop Container\Download Stock Data.Paths[Row Count Output 1]"
+          TopLeft="402.666661438843,376.199994405508">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-74.7499969390533,0"
+              EndConnector="0,40.9666651711863"
               Start="0,0"
-              End="-67.2499969390533,0">
+              End="0,33.4666651711863">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-67.2499969390533,0" />
+                    End="0,33.4666651711863" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Import Crypto Data.Paths[NoMatch]"
-          TopLeft="399.624995110557,286.833329730233">
+          Id="Package\Foreach Loop Container\Download Stock Data.Paths[PriceData]"
+          TopLeft="403.916661954175,284.999996048212">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,46.6999980086089"
+              EndConnector="0,48.5333316906292"
               Start="0,0"
-              End="0,39.1999980086089">
+              End="0,41.0333316906292">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,39.1999980086089" />
+                    End="0,41.0333316906292" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-19.61193359375,14.7254872855545,39.2238671875,9.7490234375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Import Crypto Data.Paths[Merge Join Output]"
-          TopLeft="396.499995157123,188.033331496914">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,56.7999982333183"
-              Start="0,0"
-              End="0,49.2999982333183">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,49.2999982333183" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Import Crypto Data.Paths[Sort Output]"
-          TopLeft="257.583330955356,166.166664845745">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="72.8333307877184,0"
-              Start="0,0"
-              End="65.3333307877184,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="65.3333307877184,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Import Crypto Data.Paths[Row Count Output 1]"
-          TopLeft="402.333328105509,375.533327738841">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,41.6333318378522"
-              Start="0,0"
-              End="0,34.1333318378522">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,34.1333318378522" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Import Crypto Data.Paths[PriceData]"
-          TopLeft="209.416664623966,103.966665558616">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,40.3333326359592"
-              Start="0,0"
-              End="0,32.8333326359592">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,32.8333326359592" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Import Crypto Data\Trading">
+    design-time-name="Package\Foreach Loop Container\Download Stock Data\Staging Table">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -3124,14 +2493,6 @@ ORDER BY CryptoId, [Timestamp]</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Import Crypto Data\Crypto History">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>

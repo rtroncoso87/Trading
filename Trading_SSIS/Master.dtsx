@@ -11,8 +11,8 @@
   DTS:LocaleID="2057"
   DTS:ObjectName="Master"
   DTS:PackageType="5"
-  DTS:VersionBuild="29"
-  DTS:VersionGUID="{FAFE6DB9-C823-495C-8A1B-623BE0F818D8}">
+  DTS:VersionBuild="32"
+  DTS:VersionGUID="{D2E280E0-40E4-47D4-96F2-A755F86945AF}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
@@ -127,6 +127,7 @@
           DTS:refId="Package\Download Lookup Data\Import CoinList"
           DTS:CreationName="Microsoft.Pipeline"
           DTS:Description="Data Flow Task"
+          DTS:Disabled="True"
           DTS:DTSID="{88cdcb1f-49ea-406c-bd05-b21eae63e45b}"
           DTS:ExecutableType="Microsoft.Pipeline"
           DTS:LocaleID="-1"
@@ -155,7 +156,7 @@
                       name="SourceCode"
                       state="cdata">
                       <arrayElements
-                        arrayElementCount="48">
+                        arrayElementCount="51">
                         <arrayElement
                           dataType="System.String"><![CDATA[PriceData.cs]]></arrayElement>
                         <arrayElement
@@ -205,6 +206,7 @@ using System.Web.Script.Serialization;
 using SC_2d143923421e4fc199c2060b8d062f7f;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 #endregion
 
 /// <summary>
@@ -317,7 +319,8 @@ public class ScriptMain : UserComponent
 
         try
         {
-            coins = js.Deserialize<CoinListResponse>(responseString);
+            //coins = js.Deserialize<CoinListResponse>(responseString);
+            coins = JsonConvert.DeserializeObject<CoinListResponse>(responseString);
             BaseImageUrl = coins.BaseImageUrl;
             BaseLinkUrl = coins.BaseLinkUrl;
         }
@@ -328,36 +331,36 @@ public class ScriptMain : UserComponent
         }
 
         //foreach (CoinData c in coins.Data)
-        foreach (Coins c in coins.Data.)
+        foreach (CoinData c in coins.Data)
         {
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
 
             CoinListBuffer.AddRow();
-            CoinListBuffer.Id = c.Coin.Values;
-            CoinListBuffer.Url = BaseLinkUrl + c.coin.Url;
-            CoinListBuffer.ImageUrl = BaseImageUrl + c.coin.ImageUrl;
-            CoinListBuffer.Name = c.coin.Name;
-            CoinListBuffer.Symbol = c.coin.Symbol;
-            CoinListBuffer.CoinName = c.coin.CoinName;
-            CoinListBuffer.FullName = c.coin.FullName;
-            CoinListBuffer.Algorithm = c.coin.Algorithm;
-            CoinListBuffer.ProofType = c.coin.ProofType;
-            CoinListBuffer.TotalCoinSupply = c.coin.TotalCoinSupply;
-            CoinListBuffer.SortOrder = c.coin.SortOrder;
-            CoinListBuffer.Sponsored = c.coin.Sponsored;
+            //CoinListBuffer.Id = c.Coin.Values;
+            //CoinListBuffer.Url = BaseLinkUrl + c.coin.Url;
+            //CoinListBuffer.ImageUrl = BaseImageUrl + c.coin.ImageUrl;
+            //CoinListBuffer.Name = c.coin.Name;
+            //CoinListBuffer.Symbol = c.coin.Symbol;
+            //CoinListBuffer.CoinName = c.coin.CoinName;
+            //CoinListBuffer.FullName = c.coin.FullName;
+            //CoinListBuffer.Algorithm = c.coin.Algorithm;
+            //CoinListBuffer.ProofType = c.coin.ProofType;
+            //CoinListBuffer.TotalCoinSupply = c.coin.TotalCoinSupply;
+            //CoinListBuffer.SortOrder = c.coin.SortOrder;
+            //CoinListBuffer.Sponsored = c.coin.Sponsored;
 
-            //CoinListBuffer.Id = c.Id;
-            //CoinListBuffer.Url = BaseLinkUrl + c.Url;
-            //CoinListBuffer.ImageUrl = BaseImageUrl + c.ImageUrl;
-            //CoinListBuffer.Name = c.Name;
-            //CoinListBuffer.Symbol = c.Symbol;
-            //CoinListBuffer.CoinName = c.CoinName;
-            //CoinListBuffer.FullName = c.FullName;
-            //CoinListBuffer.Algorithm = c.Algorithm;
-            //CoinListBuffer.ProofType = c.ProofType;
-            //CoinListBuffer.TotalCoinSupply = c.TotalCoinSupply;
-            //CoinListBuffer.SortOrder = c.SortOrder;
-            //CoinListBuffer.Sponsored = c.Sponsored;
+            CoinListBuffer.Id = c.Id;
+            CoinListBuffer.Url = BaseLinkUrl + c.Url;
+            CoinListBuffer.ImageUrl = BaseImageUrl + c.ImageUrl;
+            CoinListBuffer.Name = c.Name;
+            CoinListBuffer.Symbol = c.Symbol;
+            CoinListBuffer.CoinName = c.CoinName;
+            CoinListBuffer.FullName = c.FullName;
+            CoinListBuffer.Algorithm = c.Algorithm;
+            CoinListBuffer.ProofType = c.ProofType;
+            CoinListBuffer.TotalCoinSupply = c.TotalCoinSupply;
+            CoinListBuffer.SortOrder = c.SortOrder;
+            CoinListBuffer.Sponsored = c.Sponsored;
         }
     }
 }
@@ -955,8 +958,7 @@ public class Variables
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -980,6 +982,9 @@ public class Variables
   <ItemGroup>
     <Compile Include="Coins.cs" />
     <Compile Include="CoinListResponse.cs" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>C:\Users\rtroncoso\AppData\Local\Temp\Vsta\SSIS_SC140\VstakfrNpOmYGEGVMHp6__ChbBg\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web.Extensions" />
@@ -1007,6 +1012,7 @@ public class Variables
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1075,24 +1081,25 @@ namespace SC_2d143923421e4fc199c2060b8d062f7f.Properties {
     <msb:CodeName>SC_2d143923421e4fc199c2060b8d062f7f</msb:CodeName>
     <msb:Language>msBuild</msb:Language>
     <msb:DisplayName>SC_2d143923421e4fc199c2060b8d062f7f</msb:DisplayName>
-    <msb:ProjectId>{58B473E5-0BC1-4E0C-8201-37B48D95EB28}</msb:ProjectId>
+    <msb:ProjectId>{6C997DFB-7C41-473A-86FC-A49B50F90102}</msb:ProjectId>
   </msb:PropertyGroup>
   <msb:ItemGroup>
     <msb:Project Include="SC_2d143923421e4fc199c2060b8d062f7f.csproj" />
+    <msb:File Include="Properties\Resources.resx" />
+    <msb:File Include="Coins.cs" />
+    <msb:File Include="CoinListResponse.cs" />
     <msb:File Include="main.cs" />
     <msb:File Include="BufferWrapper.cs" />
     <msb:File Include="CoinData.cs" />
-    <msb:File Include="CoinListResponse.cs" />
     <msb:File Include="ComponentWrapper.cs" />
     <msb:File Include="Properties\AssemblyInfo.cs" />
-    <msb:File Include="Properties\Resources.resx" />
     <msb:File Include="Properties\Resources.Designer.cs" />
+    <msb:File Include="packages.config" />
     <msb:File Include="Properties\Settings.settings" />
     <msb:File Include="Properties\Settings.Designer.cs" />
-    <msb:File Include="Coins.cs" />
     <msb:Breakpoint Include="bcfb8f9f68bd4cffaa34e827ecd09159">
       <msb:FileName>main.cs</msb:FileName>
-      <msb:LineNumber>133</msb:LineNumber>
+      <msb:LineNumber>135</msb:LineNumber>
       <msb:ColumnNumber>13</msb:ColumnNumber>
       <msb:Enabled>True</msb:Enabled>
       <msb:ConditionType>1</msb:ConditionType>
@@ -1240,7 +1247,7 @@ namespace SC_2d143923421e4fc199c2060b8d062f7f
         public string Message { get; set; }
         public string BaseImageUrl { get; set; }
         public string BaseLinkUrl { get; set; }
-        public List<Coins> Data { get; set; }
+        public List<CoinData> Data { get; set; }
 
     }
 }]]></arrayElement>
@@ -1314,6 +1321,15 @@ namespace SC_2d143923421e4fc199c2060b8d062f7f
     }
 }
 ]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[packages.config]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                        <arrayElement
+                          dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<packages>
+  <package id="Newtonsoft.Json" version="11.0.2" targetFramework="net45" />
+</packages>]]></arrayElement>
                       </arrayElements>
                     </property>
                     <property
@@ -1359,7 +1375,7 @@ namespace SC_2d143923421e4fc199c2060b8d062f7f
 &lt;a1:ScriptBreakpointInfo id="ref-1" xmlns:a1="http://schemas.microsoft.com/clr/nsassem/Microsoft.SqlServer.VSTAHosting/Microsoft.SqlServer.VSTAScriptingLib%2C%20Version%3D14.0.0.0%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3D89845dcd8080cc91"&gt;
 &lt;Enabled&gt;true&lt;/Enabled&gt;
 &lt;File id="ref-3"&gt;main.cs&lt;/File&gt;
-&lt;FileLine&gt;133&lt;/FileLine&gt;
+&lt;FileLine&gt;135&lt;/FileLine&gt;
 &lt;FileColumn&gt;13&lt;/FileColumn&gt;
 &lt;/a1:ScriptBreakpointInfo&gt;
 &lt;/SOAP-ENV:Body&gt;
@@ -5139,7 +5155,6 @@ ORDER BY CryptoId, [Timestamp]</property>
       DTS:refId="Package\Execute ImportHistoryByMinute"
       DTS:CreationName="Microsoft.ExecutePackageTask"
       DTS:Description="Execute Package Task"
-      DTS:Disabled="True"
       DTS:DTSID="{06126C62-4615-47EA-91BF-0D5563230AB9}"
       DTS:ExecutableType="Microsoft.ExecutePackageTask"
       DTS:LocaleID="-1"
@@ -5276,6 +5291,21 @@ ORDER BY CryptoId, [Timestamp]</property>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
+          Size="152,42.6666666666667"
+          Id="Package\Download Lookup Data\Import CoinList"
+          TopLeft="89.270832859911,12.5416665407519" />
+        <NodeLayout
+          Size="165.333333333334,42.6666666666667"
+          Id="Package\Download Lookup Data\Import Exchanges"
+          TopLeft="81.8125028017287,107.874998169392" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="333.333333333334,204"
+          Size="333.333333333334,246.666666666667"
+          Id="Package\Download Lookup Data"
+          TopLeft="194.270830438472,256.749995408952" />
+        <NodeLayout
           Size="214.666666666667,42.6666666666667"
           Id="Package\Execute ImportHistoryByDay"
           TopLeft="949.437487729825,658.434512035797" />
@@ -5302,6 +5332,28 @@ ORDER BY CryptoId, [Timestamp]</property>
           Size="390.666666666667,310.666666666667"
           Id="Package\Get API and Config Values"
           TopLeft="619.499989755451,228.892853049934" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="619.499989755451,382.154757562776">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-91.8958259836455,0"
+              Start="0,0"
+              End="-84.3958259836455,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-84.3958259836455,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
           TopLeft="719.166656422118,539.559519716601">
@@ -5398,43 +5450,6 @@ ORDER BY CryptoId, [Timestamp]</property>
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="152,42.6666666666667"
-          Id="Package\Download Lookup Data\Import CoinList"
-          TopLeft="89.270832859911,12.5416665407519" />
-        <NodeLayout
-          Size="165.333333333334,42.6666666666667"
-          Id="Package\Download Lookup Data\Import Exchanges"
-          TopLeft="81.8125028017287,107.874998169392" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="333.333333333334,204"
-          Size="333.333333333334,246.666666666667"
-          Id="Package\Download Lookup Data"
-          TopLeft="194.270830438472,256.749995408952" />
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="619.499989755451,382.154757562776">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-91.8958259836455,0"
-              Start="0,0"
-              End="-84.3958259836455,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-84.3958259836455,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </Package>
@@ -5444,25 +5459,25 @@ ORDER BY CryptoId, [Timestamp]</property>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="98,42"
-          Id="Package\Download Lookup Data\Import CoinList\Sort"
-          TopLeft="159.583330955356,144.299998194575" />
-        <NodeLayout
           Size="115.333333333334,42"
           Id="Package\Download Lookup Data\Import CoinList\Trading"
           TopLeft="344.999994561076,417.166659576694" />
-        <NodeLayout
-          Size="130.666666666667,42"
-          Id="Package\Download Lookup Data\Import CoinList\Row Count"
-          TopLeft="336.666661649943,333.533327738841" />
         <NodeLayout
           Size="155.333333333334,42"
           Id="Package\Download Lookup Data\Import CoinList\Conditional Split"
           TopLeft="319.583328571171,244.833329730233" />
         <NodeLayout
+          Size="98,42"
+          Id="Package\Download Lookup Data\Import CoinList\Sort"
+          TopLeft="159.583330955356,144.299998194575" />
+        <NodeLayout
           Size="130.666666666667,42"
           Id="Package\Download Lookup Data\Import CoinList\Merge Join"
           TopLeft="330.416661743075,146.033331496914" />
+        <NodeLayout
+          Size="130.666666666667,42"
+          Id="Package\Download Lookup Data\Import CoinList\Row Count"
+          TopLeft="336.666661649943,333.533327738841" />
         <NodeLayout
           Size="116,42.6666666666667"
           Id="Package\Download Lookup Data\Import CoinList\Call API"
@@ -5471,6 +5486,72 @@ ORDER BY CryptoId, [Timestamp]</property>
           Size="178.666666666667,42.6666666666667"
           Id="Package\Download Lookup Data\Import CoinList\Get Existing Coin List"
           TopLeft="535.833325348795,149.066664001147" />
+        <EdgeLayout
+          Id="Package\Download Lookup Data\Import CoinList.Paths[Sort Output]"
+          TopLeft="257.583330955356,166.166664845745">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="72.8333307877184,0"
+              Start="0,0"
+              End="65.3333307877184,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="65.3333307877184,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Download Lookup Data\Import CoinList.Paths[Row Count Output 1]"
+          TopLeft="402.333328105509,375.533327738841">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,41.6333318378522"
+              Start="0,0"
+              End="0,34.1333318378522">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.1333318378522" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Download Lookup Data\Import CoinList.Paths[PriceData]"
+          TopLeft="207.583331290632,104.633332225283">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39.6666659692922"
+              Start="0,0"
+              End="0,32.1666659692922">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.1666659692922" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\Download Lookup Data\Import CoinList.Paths[OLE DB Source Output]"
           TopLeft="535.833325348795,168.716664415697">
@@ -5539,72 +5620,6 @@ ORDER BY CryptoId, [Timestamp]</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Download Lookup Data\Import CoinList.Paths[Sort Output]"
-          TopLeft="257.583330955356,166.166664845745">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="72.8333307877184,0"
-              Start="0,0"
-              End="65.3333307877184,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="65.3333307877184,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Download Lookup Data\Import CoinList.Paths[Row Count Output 1]"
-          TopLeft="402.333328105509,375.533327738841">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,41.6333318378522"
-              Start="0,0"
-              End="0,34.1333318378522">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,34.1333318378522" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Download Lookup Data\Import CoinList.Paths[PriceData]"
-          TopLeft="207.583331290632,104.633332225283">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,39.6666659692922"
-              Start="0,0"
-              End="0,32.1666659692922">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,32.1666659692922" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
@@ -5663,28 +5678,6 @@ ORDER BY CryptoId, [Timestamp]</property>
           Id="Package\Download Lookup Data\Import Exchanges\Crypto History"
           TopLeft="535.833325348795,149.066664001147" />
         <EdgeLayout
-          Id="Package\Download Lookup Data\Import Exchanges.Paths[OLE DB Source Output]"
-          TopLeft="535.833325348795,168.549997749031">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-74.7499969390533,0"
-              Start="0,0"
-              End="-67.2499969390533,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-67.2499969390533,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
           Id="Package\Download Lookup Data\Import Exchanges.Paths[NoMatch]"
           TopLeft="399.624995110557,286.833329730233">
           <EdgeLayout.Curve>
@@ -5727,7 +5720,9 @@ ORDER BY CryptoId, [Timestamp]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -5749,7 +5744,9 @@ ORDER BY CryptoId, [Timestamp]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -5771,7 +5768,9 @@ ORDER BY CryptoId, [Timestamp]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -5793,7 +5792,33 @@ ORDER BY CryptoId, [Timestamp]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Download Lookup Data\Import Exchanges.Paths[OLE DB Source Output]"
+          TopLeft="535.833325348795,168.549997749031">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-74.7499969390533,0"
+              Start="0,0"
+              End="-67.2499969390533,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-67.2499969390533,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
